@@ -13,44 +13,42 @@ To be more specific, passengers usually need information about bus routes in gen
 
 
 ### What’s the scope of the project?
-
+The above are abstract references to various functionalities (grouped like views).
 * Bus
   * List of all buses
-  * Specific Bus Info
-  * ``` TODO ```
+  * Specific Bus Info (active path/position etc)
+  * Driver's info
 * Passenger
-  * ``` TODO ```
+  * Profile
+  * Favourite paths
+  * Interesting paths (paths that currently the passenger is interested in receiving notifications)
 * Path
-  * ``` TODO ```
+  * Official Routes (named ex Athens-Volos)
+  * Custom paths (created by bus drivers)
 * Common Services
   * About Us
   * Contact Us
   * Bug Report
 
 ### What are the deliverables?
+There are four instances at this ecosystem:
+* A backend that stores all the exchanged information
+* A bus mobile application (business/closed)
+* A passenger mobile application (free/opened)
+* A web app for the presentation of the entire ecosystem (Basically an extensive aboutUs) (maybe)
 
+### What are the requirements/prerequisites?
+Need to get in contact with bus company's drivers in order to create a demo on realistic environment.
 ```
 TODO
 ```
-
-### What are the requirements?
-
-```
-TODO
-```
-
-Requirements are important in all projects, but especially development projects. Here are a few questions you will want to ask yourself:
-
-What browsers do I need to support and test for?
-What devices do I need to support and test for?
-Is the website going to be responsive, or have a separate mobile site?
-What stack am I building on? (i.e. WordPress site, Rails app, node.js app, Shopify site, etc.)
 
 ## Schedule
+The project started at **19 February 2017** and will (for now) end at **31 June 2017**
+Each sprint will last two weeks (starts at Mondays and ends after two Sundays).
 
-```
-TODO
-```
+Schedule can be found at the below trello board:
+https://trello.com/b/c4ebNtw5
 
 ## Research
 
@@ -59,7 +57,19 @@ TODO
 ```
 
 ## Technologies
+The technologies that are gonna be used at each instance (see [deliverables](https://github.com/nikooiko/Bus#deliverables))
+Backend:
+* Node.js
+* Loopback
+* MongoDB
 
-```
-TODO
-```
+Bus mobile App:
+* React-native (maybe)
+* ```TODO```
+
+Passenger mobile App:
+* React-native (maybe)
+* ```TODO```
+
+Presentation Web App (maybe):
+* CMS or react based front-end application.
