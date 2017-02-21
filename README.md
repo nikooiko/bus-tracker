@@ -14,23 +14,23 @@ To be more specific, passengers usually need information about bus routes in gen
 
 ### What’s the scope of the project?
 The above are abstract references to various functionalities (grouped like views).
-* Bus
-  * List of all buses
+* Driver
+  * List of all bus (drivers that have active path)
   * Specific Bus Info (active path/position etc)
-  * Driver's info
+  * Driver's profile
 * Passenger
-  * Profile
-  * Favourite paths
-  * Interesting paths (paths that currently the passenger is interested in receiving notifications)
-* Path
+  * Passenger's profile
+  * Favourite routes
+  * Interesting routes (routes that currently the passenger is interested in receiving notifications)
+* Route
   * Official Routes (named ex Athens-Volos)
-  * Custom paths (created by bus drivers)
+  * Custom routes (created by bus drivers)
 * Common Services
   * About Us
   * Contact Us
   * Bug Report
 
-### What are the deliverables?
+### Deliverables
 There are four instances at this ecosystem:
 * A backend that stores all the exchanged information
 * A bus mobile application (business/closed)
@@ -51,13 +51,13 @@ Schedule can be found at the below trello board:
 https://trello.com/b/c4ebNtw5
 
 ## Research
-
+* Did a basic research on google maps.
 ```
-TODO
+TODO Research about google maps api
 ```
 
 ## Technologies
-The technologies that are gonna be used at each instance (see [deliverables](https://github.com/nikooiko/Bus#deliverables))
+The technologies that are going to be used at each instance (see [deliverables](https://github.com/nikooiko/Bus#deliverables))
 Backend:
 * Node.js
 * Loopback
