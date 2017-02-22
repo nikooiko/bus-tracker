@@ -45,7 +45,10 @@ TODO
 
 ## Schedule
 The project started at **19 February 2017** and will (for now) end at **30 June 2017**
+
 Each sprint will last two weeks (starts at Sundays and ends after two Saturdays).
+
+Final sprint lasts three weeks.
 
 Schedule can be found at the below trello board:
 https://trello.com/b/c4ebNtw5
