@@ -35,5 +35,13 @@
   "Role": {
     "dataSource": "mongoDs",
     "public": false
+  },
+  "Route": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Stop": {
+    "dataSource": "mongoDs",
+    "public": true
   }
 }

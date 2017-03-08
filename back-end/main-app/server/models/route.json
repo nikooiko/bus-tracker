@@ -1,0 +1,62 @@
+{
+  "name": "Route",
+  "plural": "Routes",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "indexes": {},
+  "options": {},
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": "string",
+    "isOfficial": {
+      "type": "Boolean",
+      "description": [
+        "Indicates whether this route is official route (eg `Volos-Athens`).",
+        "Also indicates if it can be added to passenger's favourite routes or be used",
+        "as a filter to find "
+      ],
+      "default": false
+    },
+    "source": {
+      "type": "Object",
+      "required": true,
+      "description": [
+        "The starting point of this route. Should contain a name and location (object that",
+        "contains `lat` and `long` properties)."
+      ]
+    },
+    "destination": {
+      "type": "Object",
+      "required": true,
+      "description": [
+        "The ending point of this route. Should contain a name and location (object that",
+        "contains `Number` properties `lat` and `long`)."
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {
+    "stops": {
+      "type": "hasMany",
+      "model": "Stop"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}

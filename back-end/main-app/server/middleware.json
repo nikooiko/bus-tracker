@@ -4,6 +4,7 @@
   },
   "initial": {
     "compression": {},
+    "./middleware/requestTracker": {},
     "cors": {
       "params": {
         "origin": true,
@@ -15,7 +16,7 @@
     "helmet#frameguard": {
       "params": [
         "deny"
-       ]
+      ]
     },
     "helmet#hsts": {
       "params": {
@@ -45,6 +46,10 @@
     "loopback#urlNotFound": {}
   },
   "final:after": {
-    "strong-error-handler": {}
+    "strong-error-handler": {
+      "params": {
+        "log": true
+      }
+    }
   }
 }

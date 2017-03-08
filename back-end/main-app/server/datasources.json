@@ -4,14 +4,14 @@
     "connector": "memory"
   },
   "mongoDs": {
-    "name": "mongoDs",
-    "connector": "mongodb",
     "host": "localhost",
     "port": 27017,
     "url": "${MONGOURL}",
     "database": "Bus",
-    "user": "",
     "password": "",
+    "name": "mongoDs",
+    "connector": "mongodb",
+    "user": "",
     "server": {
       "auto_reconnect": true,
       "reconnectTries": 1.7976931348623157e+308

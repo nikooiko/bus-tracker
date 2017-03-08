@@ -1,6 +1,5 @@
 'use strict';
 
-const Promise = require('bluebird');
 const getModelCollection = require('../../server/lib/customUtils').getModelCollection;
 
 module.exports = (AppUser) => {
