@@ -1,4 +1,4 @@
-# Bus (TODO find better name)
+# Bus Tracker Project
 
 ## Description
 ### What’s the goal of the project?
@@ -62,17 +62,19 @@ TODO Research about google maps api
 ## Technologies
 The technologies that are going to be used at each instance (see [deliverables](https://github.com/nikooiko/Bus#deliverables))
 Backend:
-* Node.js
-* Loopback
-* MongoDB
+* DB
+  * MongoDB
+*  main-app
+  * Node.js
+  * Loopback
 
-Bus mobile App:
-* React-native (maybe)
-* ```TODO```
+Driver's mobile App:
+* Stick with android defaults
+* Loopback SDK (maybe)
 
-Passenger mobile App:
-* React-native (maybe)
-* ```TODO```
+Passenger's mobile App:
+* Stick with android defaults
+* Loopback SDK (maybe)
 
 Presentation Web App (maybe):
 * CMS or react based front-end application.
