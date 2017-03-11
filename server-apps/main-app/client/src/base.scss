@@ -1,0 +1,80 @@
+@import './customTheme.scss'; // important to be before grommet imports
+@import '~grommet/scss/grommet-core/index';
+@import '~grommet/scss/vanilla/objects.button-vanilla';
+  // Logo dimensions
+.nav-logo {
+  max-width: 200px !important;
+}
+
+.#{$grommet-namespace}sidebar {
+  @include media-query(lap-and-up) {
+    @include animation('slide-sidebar 0.2s');
+  }
+}
+
+@include keyframes(slide-sidebar) {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: $sidebar-width;
+  }
+}
+
+.show-under {
+  z-index: -1;
+}
+
+.hide {
+  display: none !important;
+}
+
+.hide-portable {
+  // nothing
+}
+
+.hide-palm {
+  // nothing
+}
+
+.show-portable {
+  // nothing;
+}
+
+// for Smaller screens
+@media screen and (max-width: $break-portable-max-width) {
+  .nav-logo {
+    max-width: 150px !important;
+  }
+  .hide-portable {
+    display: none !important;
+  }
+}
+
+// for Mobile phone screens
+@media screen and (max-width: $break-palm-max-width) {
+  .hide-palm {
+    display: none !important;
+  }
+}
+
+// for Bigger screens
+@media screen and (min-width: $break-portable-max-width) {
+  .show-portable {
+    display: none !important;
+  }
+}
+
+// Debug TODO Exclude
+.red-border {
+  border: 1px solid red;
+}
+
+.green-border {
+  border: 1px double green;
+}
+
+.blue-border {
+  border: 1px dotted blue;
+}

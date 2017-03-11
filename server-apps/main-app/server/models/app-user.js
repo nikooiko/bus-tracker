@@ -9,6 +9,13 @@ module.exports = (AppUser) => {
     attachedModel.ObjectId = attachedModel.dataSource.ObjectID; // get ObjectId constructor
   });
 
+  AppUser.afterRemote('login', (ctx, result) =>
+    AppUser.getUserRoles(result.userId)
+      .then((roles) => {
+        result.roles = roles;
+      })
+  );
+
   // Static methods
   /**
    * @method getUserRoles
@@ -17,7 +24,7 @@ module.exports = (AppUser) => {
    * @static
    */
   AppUser.getUserRoles = (userId) => {
-    const appModels = this.app.models;
+    const appModels = AppUser.app.models;
     const Role = appModels.Role;
     const RoleMapping = appModels.RoleMapping;
     return new Promise((resolve, reject) => {

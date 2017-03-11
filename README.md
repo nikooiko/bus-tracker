@@ -33,6 +33,7 @@ The above are abstract references to various functionalities (grouped like views
 ### Deliverables
 There are four instances at this ecosystem:
 * A backend that stores all the exchanged information
+* An administration application (dashboard)
 * A bus mobile application (business/closed)
 * A passenger mobile application (free/opened)
 * A web app for the presentation of the entire ecosystem (Basically an extensive aboutUs) (maybe)
@@ -67,6 +68,11 @@ Backend:
 *  main-app
   * Node.js
   * Loopback
+
+Admin's app:
+* React
+* Redux
+* Grommet UI
 
 Driver's mobile App:
 * Stick with android defaults
