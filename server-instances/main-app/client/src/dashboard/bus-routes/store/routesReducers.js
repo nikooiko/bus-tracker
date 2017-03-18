@@ -1,4 +1,4 @@
-import { UPDATE_ROUTE, SET_ROUTE, SET_ROUTES, SET_IS_FETCHING } from './routesTypes';
+import { SET_BUS_ROUTES, SET_BUS_ROUTE, UPDATE_BUS_ROUTE, SET_IS_FETCHING } from './routesTypes';
 
 const INITIAL_STATE = {
   routes: [],
@@ -17,12 +17,12 @@ export default (state = INITIAL_STATE, action) => {
   let newRoute;
   let oldRouteIndex;
   switch(action.type) {
-    case SET_ROUTES:
+    case SET_BUS_ROUTES:
       newRoutes = action.routes;
       return { ...state,
         routes: newRoutes
       };
-    case SET_ROUTE:
+    case SET_BUS_ROUTE:
       newRoute = action.route;
       newRoutes = [...state.routes];
       oldRouteIndex = newRoutes.findIndex(findRoute(newRoute.id));
@@ -36,7 +36,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         routes: newRoutes
       };
-    case UPDATE_ROUTE:
+    case UPDATE_BUS_ROUTE:
       routeId = action.routeId;
       newRoutes = [...state.routes];
       oldRouteIndex = newRoutes.findIndex(findRoute(routeId));

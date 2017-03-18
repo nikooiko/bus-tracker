@@ -3,12 +3,12 @@ import FormField from 'grommet/components/FormField';
 import Select from 'grommet/components/Select';
 
 class Form extends React.Component {
-  constructor(props, content, fields, formValidator) {
+  constructor(props, content, defaultFieldValues, formValidator) {
     super(props, content);
     this.state = {
       ...this.state,
       form: {
-        fields,
+        fields: defaultFieldValues,
         errors: {}
       }
     };

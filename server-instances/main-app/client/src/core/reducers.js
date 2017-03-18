@@ -5,7 +5,7 @@ import { createResponsiveStateReducer } from 'redux-responsive';
 import sidebar from '../dashboard/navigation/sidebar/store/sidebarReducers';
 import auth from '../auth/store/authReducers';
 import { UNAUTH_USER } from '../auth/store/authTypes';
-import busRoutes from '../dashboard/routes/store/routesReducers';
+import busRoutes from '../dashboard/bus-routes/store/routesReducers';
 import api from '../utils/api';
 
 const customBreakPoints = {

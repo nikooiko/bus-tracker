@@ -35,6 +35,7 @@
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "grommet": "^1.1.0",
+    "grommet-addons": "^0.3.0",
     "node-sass": "^4.1.1",
     "node-uuid": "^1.4.7",
     "normalizr": "^3.0.0-alpha.5",

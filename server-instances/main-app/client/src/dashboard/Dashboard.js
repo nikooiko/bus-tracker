@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Split from 'grommet/components/Split';
 import Article from 'grommet/components/Article';
 import Sidebar from './navigation/sidebar/Sidebar';
-import { fetchOfficialRoutes } from './routes/store/routesActions';
+import { fetchOfficialRoutes } from './bus-routes/store/routesActions';
 import Loading from '../common/Loading';
 
 class Dashboard extends React.Component {
