@@ -7,14 +7,13 @@
  * @param {loopback} app Our loopback application
  */
 module.exports = app => {
-  // TODO uncomment and fix
   const Role = app.models.Role;
   const AppUser = app.models.AppUser;
   const RoleMapping = app.models.RoleMapping;
   let adminRole;
   const defaultAdmin = {
     username: 'admin',
-    email: 'admin@iot-hub.com',
+    email: 'admin@bus-tracker.com',
     password: '1234'
   };
   Role.findOrCreate({ name: 'admin' })

@@ -2,27 +2,25 @@
   "name": "AppUser",
   "description": [
     "Both passengers and drivers are AppUsers. The difference is that drivers",
-    "have userRole `Driver` in order to access business application and use also",
-    "driver's properties."
+    "have userRole `Driver` in order to access driver's application and properties."
   ],
   "plural": "AppUsers",
   "base": "User",
   "strict": true,
   "idInjection": true,
-  "indexes": {
-    "location": {
-      "type": "object",
-      "required": true,
-      "description": "Should contain `Number` properties `long` and `lat`"
-    }
-  },
+  "indexes": {},
   "options": {
     "validateUpsert": true
   },
   "hidden": [
     "password"
   ],
-  "properties": {},
+  "properties": {
+    "location": {
+      "type": "object",
+      "description": "Should contain `Number` properties `long` and `lat`"
+    }
+  },
   "validations": [],
   "relations": {
     "interestingRoutes": {

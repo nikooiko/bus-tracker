@@ -9,6 +9,7 @@ import { responsiveStoreEnhancer } from 'redux-responsive';
 import reducers from './reducers';
 import { loadState as localStorageLoad, saveState as localStorageSave } from './localStorage';
 import { loadState as sessionStorageLoad, saveState as sessionStorageSave } from './sessionStorage';
+import api from '../utils/api';
 
 const configureStore = () => {
   const sessionStorageState = sessionStorageLoad();
@@ -36,6 +37,11 @@ const configureStore = () => {
   const store = createStore(reducers, persistedState, enhancer);
   // Required for replaying actions from devtools to work
   // reduxRouter.listenForReplays(store);
+
+  // load auth token if exists
+  if (store.getState().auth.authenticated){
+    api.setAuthenticationHeader(store.getState().auth.user.accessToken);
+  }
 
   store.subscribe(throttle(() => {
     const state = store.getState();

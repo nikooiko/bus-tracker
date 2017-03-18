@@ -20,7 +20,7 @@ class App extends React.Component {
     let displayedToast;
     if (!toast.hidden) {
       displayedToast = (
-        <Toast status={toast.status} size='large' onClose={this._onClose}>
+        <Toast status={toast.status} onClose={this._onClose}>
           {toast.message}
         </Toast>
       );

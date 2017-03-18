@@ -101,7 +101,7 @@ export class List extends React.Component {
           <ListPlaceholder
             filteredTotal={filteredRoutes.length}
             unfilteredTotal={routes.length}
-            emptyMessage='You do not have any official routes.'
+            emptyMessage='Currently there are no official routes.'
           />
         </Box>
       );

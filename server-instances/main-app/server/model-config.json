@@ -34,7 +34,7 @@
   },
   "Role": {
     "dataSource": "mongoDs",
-    "public": false
+    "public": true
   },
   "Route": {
     "dataSource": "mongoDs",

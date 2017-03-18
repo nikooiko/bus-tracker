@@ -6,6 +6,7 @@ import sidebar from '../dashboard/navigation/sidebar/store/sidebarReducers';
 import auth from '../auth/store/authReducers';
 import { UNAUTH_USER } from '../auth/store/authTypes';
 import busRoutes from '../dashboard/bus-routes/store/routesReducers';
+import users from '../dashboard/users/store/reducers';
 import toast from '../toast/store/toastReducers';
 import api from '../utils/api';
 
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   sidebar,
   auth,
   busRoutes,
+  users,
   toast
 });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Button from 'grommet/components/Button';
 import Menu from 'grommet/components/Menu';
@@ -7,7 +8,8 @@ import GrommetSidebar from 'grommet/components/Sidebar';
 import CloseIcon from 'grommet/components/icons/base/Close'
 import Anchor from 'grommet/components/Anchor';
 import DashboardIcon from 'grommet/components/icons/base/Dashboard';
-import DeviceIcon from 'grommet/components/icons/base/Robot';
+import RoutesIcon from 'grommet/components/icons/base/Directions';
+import UserSettingsIcon from 'grommet/components/icons/base/UserSettings';
 import { closeSidebar } from './store/sidebarActions';
 import bindFunctions from '../../../utils/bindFunctions';
 
@@ -31,6 +33,7 @@ class Sidebar extends React.Component {
         <Header
           size='medium' pad={{ horizontal: 'medium', between: 'medium' }} onClick={this._onClose}
         >
+          <Box flex={true} />
           <Button
             icon={<CloseIcon />}
             plain={true}
@@ -45,7 +48,11 @@ class Sidebar extends React.Component {
           />
           <Anchor
             path={'/routes'} label={'Routes'}
-            icon={<DeviceIcon />}
+            icon={<RoutesIcon />}
+          />
+          <Anchor
+            path={'/users'} label={'Users'}
+            icon={<UserSettingsIcon />}
           />
         </Menu>
       </GrommetSidebar>
