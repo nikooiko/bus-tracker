@@ -22,9 +22,14 @@ const get = (url, params) => {
   return instance.get(url, params);
 };
 
+const del = (url) => {
+  return instance.delete(url);
+};
+
 export default {
   setAuthenticationHeader,
   post,
   patch,
-  get
+  get,
+  del
 }

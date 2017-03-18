@@ -1,7 +1,9 @@
 import { routerActions } from 'react-router-redux';
 import api from '../../../utils/api';
-import { SET_BUS_ROUTES, SET_BUS_ROUTE, UPDATE_BUS_ROUTE, SET_IS_FETCHING } from './routesTypes';
 import { createFormErrors } from '../../../utils/formUtils';
+import {
+  SET_BUS_ROUTES, SET_BUS_ROUTE, UPDATE_BUS_ROUTE, REMOVE_BUS_ROUTE, SET_IS_FETCHING
+} from './routesTypes';
 
 // Sync Action Creators
 export const setIsFetching = (isFetching) => {
@@ -14,6 +16,10 @@ export const setRoute = (route) => {
 
 export const updateRoute = (routeId, newValues) => {
   return { type: UPDATE_BUS_ROUTE, routeId, newValues };
+};
+
+export const removeRoute = (routeId) => {
+  return { type: REMOVE_BUS_ROUTE, routeId };
 };
 
 export const setRoutes = (routes) => {
@@ -56,7 +62,7 @@ export const createOfficialRoute = (form) => {
     return api.post('/Routes', form)
       .then(response => {
         const route = response.data;
-        // dispatch(setRoute(route));
+        dispatch(setRoute(route));
         dispatch(routerActions.push('/routes'));
       })
       .catch((err) => {
@@ -69,9 +75,6 @@ export const createOfficialRoute = (form) => {
 export const updateOfficialRoute = (routeId, form) => {
   return (dispatch) => {
     // TODO maybe add fetching status or smth
-
-    // todo maybe append isOfficial?
-
     return api.patch(`/Routes/${routeId}`, form)
       .then(response => {
         const route = response.data;
@@ -81,6 +84,19 @@ export const updateOfficialRoute = (routeId, form) => {
       .catch((err) => {
         console.error(err.message);
         return Promise.reject(createFormErrors(err));
+      });
+  };
+};
+
+export const removeOfficialRoute = (routeId) => {
+  return (dispatch) => {
+    // TODO maybe add fetching status or smth
+    return api.del(`/Routes/${routeId}`)
+      .then(() => {
+        dispatch(removeRoute(routeId));
+      })
+      .catch((err) => {
+        console.error(err.message);
       });
   };
 };

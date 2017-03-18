@@ -1,0 +1,19 @@
+import { SHOW_TOAST, HIDE_TOAST } from './toastTypes';
+
+const INITIAL_STATE = {
+  hidden: true,
+  timer: null,
+  message: '',
+  status: 'unknown'
+};
+
+export default (state = INITIAL_STATE, action) => {
+  switch(action.type) {
+    case SHOW_TOAST:
+      return { ...state, ...action.opts, hidden: false, timer: action.timer };
+    case HIDE_TOAST:
+      return { ...state, hidden: true, timer: null };
+    default:
+      return state;
+  }
+}

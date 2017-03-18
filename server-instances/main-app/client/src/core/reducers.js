@@ -6,6 +6,7 @@ import sidebar from '../dashboard/navigation/sidebar/store/sidebarReducers';
 import auth from '../auth/store/authReducers';
 import { UNAUTH_USER } from '../auth/store/authTypes';
 import busRoutes from '../dashboard/bus-routes/store/routesReducers';
+import toast from '../toast/store/toastReducers';
 import api from '../utils/api';
 
 const customBreakPoints = {
@@ -19,7 +20,8 @@ const appReducer = combineReducers({
   routing,
   sidebar,
   auth,
-  busRoutes
+  busRoutes,
+  toast
 });
 
 const rootReducer = (state, action) => {

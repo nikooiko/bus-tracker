@@ -8,13 +8,16 @@ import Header from 'grommet/components/Header';
 import Search from 'grommet/components/Search';
 import AddIcon from 'grommet/components/icons/base/Add';
 import EditIcon from 'grommet/components/icons/base/Edit';
+import RemoveIcon from 'grommet/components/icons/base/Trash';
 import GrommetList from 'grommet/components/List';
 import ListItem from 'grommet/components/ListItem';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import Navbar from '../navigation/Navbar';
 import Loading from '../../common/Loading';
 import bindFunctions from '../../utils/bindFunctions';
+import { removeOfficialRoute } from './store/routesActions';
 import { closeSidebar } from '../navigation/sidebar/store/sidebarActions';
+import { showToast } from '../../toast/store/toastActions';
 
 export class List extends React.Component {
   constructor(props, content) {
@@ -42,6 +45,26 @@ export class List extends React.Component {
     };
   }
 
+  onRemove(routeId) {
+    return () => {
+      this.props.removeOfficialRoute(routeId)
+        .then(() => {
+          const message = 'Successful route removal.';
+          this.props.showToast({
+            message,
+            status: 'ok'
+          });
+        })
+        .catch(() => {
+          const message = 'Failed to remove route.';
+          this.props.showToast({
+            message,
+            status: 'critical'
+          });
+        });
+    };
+  }
+
   renderRoute(route) {
     const routeId = route.id;
     return (
@@ -54,6 +77,10 @@ export class List extends React.Component {
         <Anchor
           icon={<EditIcon />} path={`/routes/${routeId}`} a11yTitle={`Edit Route`}
           onClick={this.onEdit(routeId)} animateIcon={true}
+        />
+        <Button
+          icon={<RemoveIcon />} a11yTitle={`Remove Official Route`}
+          onClick={this.onRemove(routeId)}
         />
       </ListItem>
     );
@@ -108,4 +135,8 @@ const mapStateToProps = (state) => ({
   busRoutes: state.busRoutes
 });
 
-export default connect(mapStateToProps, { push: routerActions.push, closeSidebar })(List);
+const mapDispatchToProps = {
+  removeOfficialRoute, push: routerActions.push, closeSidebar, showToast
+} ;
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);
