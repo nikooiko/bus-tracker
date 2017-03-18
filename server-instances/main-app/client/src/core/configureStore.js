@@ -40,7 +40,7 @@ const configureStore = () => {
   store.subscribe(throttle(() => {
     const state = store.getState();
     const auth = state.auth;
-    if (auth.rememberMe) {
+    if (auth.rememberMe || !auth.authenticated) {
       localStorageSave({
         auth
       });
