@@ -3,6 +3,7 @@ import { routerActions } from 'react-router-redux';
 
 import { AUTH_USER, UNAUTH_USER } from './authTypes';
 import { routeAfterAuth, routeAfterUnauth } from '../authConfig';
+import { showToast } from '../../toast/store/toastActions';
 
 export const login = (credentials) => {
   return (dispatch) => {
@@ -19,6 +20,13 @@ export const login = (credentials) => {
         api.setAuthenticationHeader(accessToken);
         dispatch({ type: AUTH_USER, rememberMe, user });
         dispatch(routerActions.push(routeAfterAuth));
+      })
+      .catch(() => {
+        const message = 'Wrong password. Try again.';
+        dispatch(showToast({
+          message,
+          status: 'critical'
+        }));
       });
   }
 };

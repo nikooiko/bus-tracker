@@ -13,12 +13,11 @@ import BusRoutes from '../dashboard/bus-routes/List';
 import BusRouteCreate from '../dashboard/bus-routes/Create';
 import BusRouteEdit from '../dashboard/bus-routes/Edit';
 import Home from '../home/Home';
+import { hideToast } from '../toast/store/toastActions';
 
 export default (store) => {
   const routeChangeHandler = () => {
-    // if (store.getState().sidebar.opened) { // TODO decide if enabled or not
-    //   store.dispatch(closeSidebar());
-    // }
+    if (!store.getState().toast.hidden) store.dispatch(hideToast());
   };
 
   return (

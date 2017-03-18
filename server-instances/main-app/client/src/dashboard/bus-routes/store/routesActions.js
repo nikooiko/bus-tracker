@@ -1,6 +1,7 @@
 import { routerActions } from 'react-router-redux';
 import api from '../../../utils/api';
 import { createFormErrors } from '../../../utils/formUtils';
+import { showToast } from '../../../toast/store/toastActions';
 import {
   SET_BUS_ROUTES, SET_BUS_ROUTE, UPDATE_BUS_ROUTE, REMOVE_BUS_ROUTE, SET_IS_FETCHING
 } from './routesTypes';
@@ -64,9 +65,19 @@ export const createOfficialRoute = (form) => {
         const route = response.data;
         dispatch(setRoute(route));
         dispatch(routerActions.push('/routes'));
+        const message = 'Successful route creation.';
+        dispatch(showToast({
+          message,
+          status: 'ok'
+        }));
       })
       .catch((err) => {
         console.error(err.message);
+        const message = 'Failed to create route.';
+        dispatch(showToast({
+          message,
+          status: 'critical'
+        }));
         return Promise.reject(createFormErrors(err));
       });
   };
@@ -80,9 +91,19 @@ export const updateOfficialRoute = (routeId, form) => {
         const route = response.data;
         dispatch(updateRoute(routeId, route));
         dispatch(routerActions.push('/routes'));
+        const message = 'Successful route update.';
+        dispatch(showToast({
+          message,
+          status: 'ok'
+        }));
       })
       .catch((err) => {
         console.error(err.message);
+        const message = 'Failed to update route.';
+        dispatch(showToast({
+          message,
+          status: 'critical'
+        }));
         return Promise.reject(createFormErrors(err));
       });
   };
@@ -94,9 +115,19 @@ export const removeOfficialRoute = (routeId) => {
     return api.del(`/Routes/${routeId}`)
       .then(() => {
         dispatch(removeRoute(routeId));
+        const message = 'Successful route removal.';
+        dispatch(showToast({
+          message,
+          status: 'ok'
+        }));
       })
       .catch((err) => {
         console.error(err.message);
+        const message = 'Failed to remove route.';
+        dispatch(showToast({
+          message,
+          status: 'critical'
+        }));
       });
   };
 };

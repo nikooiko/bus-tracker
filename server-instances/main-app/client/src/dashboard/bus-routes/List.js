@@ -17,7 +17,6 @@ import Loading from '../../common/Loading';
 import bindFunctions from '../../utils/bindFunctions';
 import { removeOfficialRoute } from './store/routesActions';
 import { closeSidebar } from '../navigation/sidebar/store/sidebarActions';
-import { showToast } from '../../toast/store/toastActions';
 
 export class List extends React.Component {
   constructor(props, content) {
@@ -47,21 +46,7 @@ export class List extends React.Component {
 
   onRemove(routeId) {
     return () => {
-      this.props.removeOfficialRoute(routeId)
-        .then(() => {
-          const message = 'Successful route removal.';
-          this.props.showToast({
-            message,
-            status: 'ok'
-          });
-        })
-        .catch(() => {
-          const message = 'Failed to remove route.';
-          this.props.showToast({
-            message,
-            status: 'critical'
-          });
-        });
+      this.props.removeOfficialRoute(routeId);
     };
   }
 
@@ -135,8 +120,6 @@ const mapStateToProps = (state) => ({
   busRoutes: state.busRoutes
 });
 
-const mapDispatchToProps = {
-  removeOfficialRoute, push: routerActions.push, closeSidebar, showToast
-} ;
+const mapDispatchToProps = { removeOfficialRoute, push: routerActions.push, closeSidebar } ;
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

@@ -2,14 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import GrommetApp from 'grommet/components/App';
 import Toast from 'grommet/components/Toast';
+import bindFunctions from '../utils/bindFunctions';
+import { hideToast } from '../toast/store/toastActions';
 
 class App extends React.Component {
+  constructor(props, content) {
+    super(props, content);
+    bindFunctions(this, ['_onClose']);
+  }
+
+  _onClose() {
+    this.props.hideToast();
+  }
+
   render() {
     const toast = this.props.toast;
     let displayedToast;
     if (!toast.hidden) {
       displayedToast = (
-        <Toast status={toast.status} size='medium'>
+        <Toast status={toast.status} size='large' onClose={this._onClose}>
           {toast.message}
         </Toast>
       );
@@ -29,4 +40,4 @@ const mapStateToProps = (state) => ({
   toast: state.toast
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, { hideToast })(App);

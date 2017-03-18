@@ -1,16 +1,15 @@
 import { SHOW_TOAST, HIDE_TOAST } from './toastTypes';
 
-const TOAST_LIFETIME = 5000; // 5sec
-
 export const showToast = (opts) => {
-  return (dispatch, getState) => {
-    const toast = getState().toast;
-    if (toast.timer) clearTimeout(toast.timer);
-    const timer = setTimeout(() => {
-      dispatch({ type: HIDE_TOAST });
-    }, TOAST_LIFETIME);
+  return (dispatch) => {
+    dispatch({ type: SHOW_TOAST, opts });
+    return Promise.resolve();
+  }
+};
 
-    dispatch({ type: SHOW_TOAST, opts, timer });
+export const hideToast = () => {
+  return (dispatch) => {
+    dispatch({ type: HIDE_TOAST });
     return Promise.resolve();
   }
 };

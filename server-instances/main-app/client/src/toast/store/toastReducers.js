@@ -10,9 +10,9 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case SHOW_TOAST:
-      return { ...state, ...action.opts, hidden: false, timer: action.timer };
+      return { ...state, ...action.opts, hidden: false };
     case HIDE_TOAST:
-      return { ...state, hidden: true, timer: null };
+      return { ...state, hidden: true };
     default:
       return state;
   }
