@@ -6,6 +6,11 @@ const instance = axios.create({
   baseURL: API_URL
 });
 
+export const addInterceptor = (type, normalHandler, errorHandler) => {
+  if (type !== 'request' && type !== 'response') return console.error('Wrong interceptor type.');
+  instance.interceptors[type].use(normalHandler, errorHandler);
+};
+
 const setAuthenticationHeader = (accessToken) => {
   instance.defaults.headers.common['Authorization'] = accessToken;
 };

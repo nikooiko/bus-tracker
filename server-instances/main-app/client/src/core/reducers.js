@@ -8,7 +8,6 @@ import { UNAUTH_USER } from '../auth/store/types';
 import busRoutes from '../dashboard/bus-routes/store/reducers';
 import users from '../dashboard/users/store/reducers';
 import toast from '../toast/store/reducers';
-import api from '../utils/api';
 
 const customBreakPoints = {
   palm: 719,
@@ -29,7 +28,6 @@ const appReducer = combineReducers({
 const rootReducer = (state, action) => {
   if (action.type === UNAUTH_USER) {
     state.busRoutes = undefined;
-    api.setAuthenticationHeader(null);
   }
   return appReducer(state, action);
 };
