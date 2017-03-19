@@ -46,26 +46,18 @@ module.exports = (AppUser) => {
         });
       })
       .then((principals) => {
-        if (principals.length === 0) {
-          // No match
-          if (shouldRemove) {
-            return Promise.reject(httpError(
-              'Requested remove role but user didn\'t have this role.', 400));
-          }
+        if (principals.length === 0 && !shouldRemove) { // No match and requested add
           // Add role.
           return role.principals.create({
             principalType: RoleMapping.USER,
             principalId: user.id
-          })
-        } else {
-          // There is a match at principals[0]
-          if (!shouldRemove) {
-            return Promise.reject(httpError(
-              'Requested add role but user already had this role.', 400));
-          }
-          // Remove role.
+          });
+        }
+        if (shouldRemove && principals[0]) { // There is a match at principals[0] and requested
+          // Remove role;
           return principals[0].remove();
         }
+        return null;
       })
       .then(() => {
         const include = {
