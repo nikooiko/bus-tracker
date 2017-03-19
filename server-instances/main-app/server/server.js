@@ -22,7 +22,7 @@ app.start = () => {
     if (process.env.NODE_ENV !== 'testing') {
       process.on('uncaughtException', (err) => {
         // Operational error, log and exit...
-        logger.error({ err }, err.description || 'Operational error... will exit');
+        logger.error({ err }, err.description || err.message || 'Operational error... will exit');
         setTimeout(process.exit, 1000, 1); // exit after 1 second
       });
     }

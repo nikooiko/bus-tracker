@@ -7,7 +7,7 @@
  */
 module.exports = () => function tracker(req, res, next) {
   const startTime = new Date();
-  logger.info('Request Received ');
+  logger.debug('Request Received ');
 
   res.once('finish', () => {
     const endTime = new Date();
@@ -17,7 +17,7 @@ module.exports = () => function tracker(req, res, next) {
       url: req.originalUrl,
       timeMs: diff
     };
-    logger.info(logObj, 'Request serving completed');
+    logger.debug(logObj, 'Request serving completed');
   });
 
   next();

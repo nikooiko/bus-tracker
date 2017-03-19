@@ -5,10 +5,9 @@ import Button from 'grommet/components/Button';
 import Header from 'grommet/components/Header';
 import Search from 'grommet/components/Search';
 import DriverIcon from 'grommet/components/icons/base/Bus';
-import Table from 'grommet/components/Table';
-import TableHeader from 'grommet/components/TableHeader';
-import TableRow from 'grommet/components/TableRow';
-import Notification from 'grommet/components/Notification';
+import GrommetList from 'grommet/components/List';
+import ListItem from 'grommet/components/ListItem';
+import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import Navbar from '../navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
 import { enableDriver, disableDriver } from './store/actions';
@@ -18,6 +17,20 @@ export class List extends React.Component {
     super(props, content);
     bindFunctions(this, ['_onSearch']);
   }
+
+  /**
+   * Function used to search for a role inside `user.roles`.
+   *
+   * @method findRole
+   * @static
+   * @param roleName
+   * @returns {function(*)}
+   */
+  static findRole (roleName) {
+    return (role) => {
+      return role.name === roleName;
+    }
+  };
 
   _onSearch() {
     // TODO
@@ -32,7 +45,7 @@ export class List extends React.Component {
    */
   onEnableDriver(userId) {
     return () => {
-      // this.props.enableDriver(userId); // TODO
+      this.props.enableDriver(userId); // TODO
     };
   }
 
@@ -45,27 +58,41 @@ export class List extends React.Component {
    */
   onDisableDriver(userId) {
     return () => {
-      // this.props.disableDriver(userId); // TODO
+      this.props.disableDriver(userId); // TODO
     };
   }
 
 
   renderUser(user) {
     const userId = user.id;
+    const roles = user.roles;
+    if (roles.findIndex(List.findRole('admin')) !== -1) return null; // ignore admin
+    let button;
+    const isDriver = roles.findIndex(List.findRole('driver')) !== -1;
+    if (isDriver) {
+      button = (
+        <Button
+          icon={<DriverIcon/>} a11yTitle={'Disable Driver\'s privileges'}
+          onClick={this.onDisableDriver(userId)} label='Disable Driver' accent={true}
+        />
+      );
+    } else {
+      button = (
+        <Button
+          icon={<DriverIcon/>} a11yTitle={'Enable Driver\'s privileges'}
+          onClick={this.onEnableDriver(userId)} label='Enable Driver' secondary={true}
+        />
+      );
+    }
     return (
-      <TableRow key={userId}>
-        <td>userId</td>
-        <td>
-          <Button
-            icon={<DriverIcon/>} a11yTitle={'Enable Driver\'s privileges'}
-            onClick={this.onEnableDriver(userId)} label='Enable Driver' secondary={true}
-          />
-          <Button
-            icon={<DriverIcon/>} a11yTitle={'Disable Driver\'s privileges'}
-            onClick={this.onDisableDriver(userId)} label='Disable Driver' accent={true}
-          />
-        </td>
-      </TableRow>
+      <ListItem
+        key={userId} direction="row" align="center" justify="between" separator='horizontal'
+        pad={{horizontal: 'medium', vertical: 'small', between: 'medium'}} responsive={false}
+      >
+        <span>{user.username}</span>
+        <span>{isDriver ? 'driver' : 'passenger'}</span>
+        {button}
+      </ListItem>
     );
   }
 
@@ -75,28 +102,33 @@ export class List extends React.Component {
       return this.props.children;
     } else {
       const users = this.props.users.users;
-      if (users.length > 0) {
-        content = (
-          <Box>
-            <Header size='medium' pad={{ horizontal: 'medium' }}>
-              <Search
-                inline={true} fill={true} size='medium' placeHolder='Dummy Search (TODO)'
-                onDOMChange={this._onSearch} iconAlign='start' responsive={false}
-              />
-            </Header>
-            <Table selectable={false}>
-              <TableHeader labels={['TODO_LABEL1', 'TODO_LABEL2']}/>
-              <tbody>
-              {users.map((user) => this.renderUser(user))}
-              </tbody>
-            </Table>
-          </Box>
-        );
-      } else {
-        content = (
-          <Notification status='warning' message='Currently there are no users' />
-        );
-      }
+      const filteredUsers = users; // dummy for now
+      content = (
+        <Box>
+          <Header size='medium' pad={{ horizontal: 'medium' }}>
+            <Search
+              inline={true} fill={true} size='medium' placeHolder='Dummy Search (TODO)'
+              onDOMChange={this._onSearch} iconAlign='start' responsive={false}
+            />
+          </Header>
+          <GrommetList selectable={false}>
+            <ListItem
+              key={0} direction="row" align="center" justify="between" separator='horizontal'
+              pad={{horizontal: 'medium', vertical: 'small', between: 'medium'}} responsive={false}
+            >
+              <span><b>Username</b></span>
+              <span><b>Role</b></span>
+              <span><b>Actions</b></span>
+            </ListItem>
+            {users.map((user) => this.renderUser(user))}
+          </GrommetList>
+          <ListPlaceholder
+            filteredTotal={filteredUsers.length}
+            unfilteredTotal={users.length}
+            emptyMessage='Currently there are no users.'
+          />
+        </Box>
+      );
     }
     return (
       <Box flex={true}>

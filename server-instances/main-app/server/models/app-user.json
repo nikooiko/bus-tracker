@@ -23,6 +23,12 @@
   },
   "validations": [],
   "relations": {
+    "roles": {
+      "type": "hasMany",
+      "model": "Role",
+      "foreignKey": "principalId",
+      "through": "RoleMapping"
+    },
     "interestingRoutes": {
       "type": "hasMany",
       "model": "Route"
@@ -52,6 +58,13 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "setRole"
     }
   ],
   "methods": {}

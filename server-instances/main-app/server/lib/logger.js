@@ -2,8 +2,22 @@
 
 const bunyan = require('bunyan');
 
+function reqSerializer(req) {
+  return {
+    method: req.method,
+    url: req.url,
+    remoteAddress: req.connection.remoteAddress,
+    userId: req.accessToken && req.accessToken.userId
+  };
+}
+
 const logConfig = {
-  name: require('../../package.json').name
+  name: require('../../package.json').name,
+  level: 20,
+  serializers: {
+    err: bunyan.stdSerializers.err,
+    req: reqSerializer
+  }
 };
 
 // Check for testing environment

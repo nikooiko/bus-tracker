@@ -1,6 +1,6 @@
 'use strict';
 
-const getModelCollection = require('../../server/lib/customUtils').getModelCollection;
+const { getModelCollection, httpError } = require('../../server/lib/customUtils');
 
 module.exports = (AppUser) => {
   AppUser.dbCollection = null; // Placeholder for getting direct access to the db collection
@@ -9,12 +9,113 @@ module.exports = (AppUser) => {
     attachedModel.ObjectId = attachedModel.dataSource.ObjectID; // get ObjectId constructor
   });
 
+  /**
+   * Remote hook that appends user roles on the result.
+   */
   AppUser.afterRemote('login', (ctx, result) =>
     AppUser.getUserRoles(result.userId)
       .then((roles) => {
         result.roles = roles;
       })
   );
+
+  AppUser.setRole = function setRole(userId, roleName, shouldRemove) {
+    const appModels = AppUser.app.models;
+    const Role = appModels.Role;
+
+    const RoleMapping = appModels.RoleMapping;
+
+    let user;
+    let role;
+
+    return Promise.all([
+      AppUser.findById(userId),
+      Role.findOne({ where: { name: roleName } })
+    ])
+      .then(([foundUser, foundRole]) => {
+        if (!foundUser) return Promise.reject(httpError('No user with this id', 400));
+        if (!foundRole) return Promise.reject(httpError('No role with this name', 400));
+        user = foundUser;
+        role = foundRole;
+        // check if there is already a role mapping for this user
+        return role.principals({
+          where: {
+            principalType: RoleMapping.USER,
+            principalId: user.id.toString()
+          }
+        });
+      })
+      .then((principals) => {
+        if (principals.length === 0) {
+          // No match
+          if (shouldRemove) {
+            return Promise.reject(httpError(
+              'Requested remove role but user didn\'t have this role.', 400));
+          }
+          // Add role.
+          return role.principals.create({
+            principalType: RoleMapping.USER,
+            principalId: user.id
+          })
+        } else {
+          // There is a match at principals[0]
+          if (!shouldRemove) {
+            return Promise.reject(httpError(
+              'Requested add role but user already had this role.', 400));
+          }
+          // Remove role.
+          return principals[0].remove();
+        }
+      })
+      .then(() => {
+        const include = {
+          relation: 'roles',
+          scope: {
+            fields: ['name']
+          }
+        };
+        return AppUser.findOne({ where: { _id: userId }, include });
+      })
+      .then((finalUser) => finalUser.roles())
+      .catch((err) => {
+        logger.error({ err }, 'Set role request failed');
+        return Promise.reject(err);
+      });
+  };
+
+  /**
+   * Remote method for setting a role to a user.
+   */
+  AppUser.remoteMethod('setRole', {
+    description: 'The login functionality for devices to receive token for server communication',
+    http: {
+      verb: 'post',
+      status: 200,
+      errorStatus: 400
+    },
+    isStatic: true,
+    accepts: [{
+      arg: 'userId',
+      description: 'The user we want to add/remove this role to.',
+      required: true,
+      type: 'string'
+    }, {
+      arg: 'roleName',
+      description: 'The name of the role.',
+      required: true,
+      type: 'string'
+    }, {
+      arg: 'shouldRemove',
+      description: 'Indicates whether the role will be removed or added',
+      type: 'boolean'
+    }],
+    returns: [{
+      arg: 'roles',
+      description: 'The final user roles',
+      type: 'object',
+      root: true
+    }]
+  });
 
   // Static methods
   /**

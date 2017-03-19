@@ -59,14 +59,16 @@ export class List extends React.Component {
       >
         <span>{route.name}</span>
         <span>{routeId}</span>
-        <Anchor
-          icon={<EditIcon />} path={`/routes/${routeId}`} a11yTitle={`Edit Route`}
-          onClick={this.onEdit(routeId)} animateIcon={true}
-        />
-        <Button
-          icon={<RemoveIcon />} a11yTitle={`Remove Official Route`}
-          onClick={this.onRemove(routeId)}
-        />
+        <Box direction='row'>
+          <Anchor
+            icon={<EditIcon />} path={`/routes/${routeId}`} a11yTitle={`Edit Route`}
+            onClick={this.onEdit(routeId)} animateIcon={true}
+          />
+          <Button
+            icon={<RemoveIcon />} a11yTitle={`Remove Official Route`}
+            onClick={this.onRemove(routeId)}
+          />
+        </Box>
       </ListItem>
     );
   }

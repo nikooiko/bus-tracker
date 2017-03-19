@@ -36,9 +36,13 @@ export const fetchOfficialRoutes = () => {
     }
 
     const params = {
-      isOfficial: true
+      filter: {
+        where: {
+          isOfficial: true
+        }
+      }
     };
-    return api.get('/Routes', params)
+    return api.get('/Routes', { params })
       .then((response) => {
         const routes = response.data;
         dispatch(setRoutes(routes));

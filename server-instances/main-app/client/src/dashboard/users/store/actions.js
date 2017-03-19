@@ -27,7 +27,18 @@ export const fetchUsers = () => {
       return Promise.resolve();
     }
 
-    return api.get('/AppUsers')
+    const params = {
+      filter: {
+        include: {
+          relation: 'roles',
+          scope: {
+            fields: ['name']
+          }
+        }
+      }
+    };
+
+    return api.get('/AppUsers', { params })
       .then((response) => {
         const users = response.data;
         dispatch(setUsers(users));
@@ -40,12 +51,17 @@ export const fetchUsers = () => {
   };
 };
 
-export const enableDriver = (userId) => { // TODO this fails, should refactor.
+export const enableDriver = (userId) => {
   return (dispatch) => {
     // TODO maybe add fetching status or smth
-    return api.post(`/AppUsers/${userId}/roles`)
-      .then(() => {
-        dispatch(updateUser(userId, {})); // TODO
+    const data = {
+      userId,
+      roleName: 'driver'
+    };
+    return api.post('/AppUsers/setRole', data)
+      .then((response) => {
+        const roles = response.data;
+        dispatch(updateUser(userId, { roles }));
         const message = 'Added driver privileges successfully.';
         dispatch(showToast({
           message,
@@ -63,12 +79,18 @@ export const enableDriver = (userId) => { // TODO this fails, should refactor.
   };
 };
 
-export const disableDriver = (userId) => { // TODO this fails, should refactor.
+export const disableDriver = (userId) => {
   return (dispatch) => {
     // TODO maybe add fetching status or smth
-    return api.post(`/AppUsers/${userId}/roles`)
-      .then(() => {
-        dispatch(updateUser(userId, {})); // TODO
+    const data = {
+      userId,
+      roleName: 'driver',
+      shouldRemove: true
+    };
+    return api.post('/AppUsers/setRole', data)
+      .then((response) => {
+        const roles = response.data;
+        dispatch(updateUser(userId, { roles }));
         const message = 'Removed driver privileges successfully.';
         dispatch(showToast({
           message,
