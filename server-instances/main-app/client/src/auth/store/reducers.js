@@ -1,4 +1,4 @@
-import { AUTH_USER, UNAUTH_USER } from './authTypes';
+import { AUTH_USER, UNAUTH_USER } from './types';
 
 const INITIAL_STATE = {
   authenticated: false,

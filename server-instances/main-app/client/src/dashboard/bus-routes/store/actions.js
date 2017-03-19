@@ -1,10 +1,10 @@
 import { routerActions } from 'react-router-redux';
 import api from '../../../utils/api';
 import { createFormErrors } from '../../../utils/formUtils';
-import { showToast } from '../../../toast/store/toastActions';
+import { showToast } from '../../../toast/store/actions';
 import {
   SET_BUS_ROUTES, SET_BUS_ROUTE, UPDATE_BUS_ROUTE, REMOVE_BUS_ROUTE, SET_IS_FETCHING
-} from './routesTypes';
+} from './types';
 
 // Sync Action Creators
 export const setIsFetching = (isFetching) => {

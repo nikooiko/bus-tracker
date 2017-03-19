@@ -1,4 +1,4 @@
-import { SHOW_TOAST, HIDE_TOAST } from './toastTypes';
+import { SHOW_TOAST, HIDE_TOAST } from './types';
 
 export const showToast = (opts) => {
   return (dispatch) => {

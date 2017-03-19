@@ -1,4 +1,4 @@
-import { OPEN_SIDEBAR, CLOSE_SIDEBAR } from './sidebarTypes';
+import { OPEN_SIDEBAR, CLOSE_SIDEBAR } from './types';
 
 const INITIAL_STATE = {
   opened: false

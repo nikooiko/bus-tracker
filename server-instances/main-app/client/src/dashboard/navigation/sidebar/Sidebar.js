@@ -10,7 +10,7 @@ import Anchor from 'grommet/components/Anchor';
 import DashboardIcon from 'grommet/components/icons/base/Dashboard';
 import RoutesIcon from 'grommet/components/icons/base/Directions';
 import UserSettingsIcon from 'grommet/components/icons/base/UserSettings';
-import { closeSidebar } from './store/sidebarActions';
+import { closeSidebar } from './store/actions';
 import bindFunctions from '../../../utils/bindFunctions';
 
 class Sidebar extends React.Component {

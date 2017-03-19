@@ -7,7 +7,7 @@ import Menu from 'grommet/components/Menu';
 import Anchor from 'grommet/components/Anchor';
 import { connect } from 'react-redux';
 import { loginRoute } from './authConfig';
-import { logout } from './store/authActions';
+import { logout } from './store/actions';
 
 class UserMenu extends React.Component {
   render() {

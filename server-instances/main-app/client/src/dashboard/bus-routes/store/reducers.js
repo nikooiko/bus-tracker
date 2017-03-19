@@ -1,6 +1,6 @@
 import {
   SET_BUS_ROUTES, SET_BUS_ROUTE, UPDATE_BUS_ROUTE, REMOVE_BUS_ROUTE, SET_IS_FETCHING
-} from './routesTypes';
+} from './types';
 
 const INITIAL_STATE = {
   routes: [],

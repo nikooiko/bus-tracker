@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import GrommetApp from 'grommet/components/App';
 import Toast from 'grommet/components/Toast';
 import bindFunctions from '../utils/bindFunctions';
-import { hideToast } from '../toast/store/toastActions';
+import { hideToast } from '../toast/store/actions';
 
 class App extends React.Component {
   constructor(props, content) {

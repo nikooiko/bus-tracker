@@ -5,7 +5,7 @@ class Home extends React.Component {
   render() {
     return (
       <Box>
-        Hello World!
+        Hello World from Bus Tracker!
       </Box>
     )
   }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Box from 'grommet/components/Box';
 import SidebarIcon from 'grommet/components/icons/base/Menu';
 import Button from 'grommet/components/Button';
-import { openSidebar } from './store/sidebarActions';
+import { openSidebar } from './store/actions';
 import bindFunctions from '../../../utils/bindFunctions';
 
 class Sidebar extends React.Component {

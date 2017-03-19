@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import bindFunctions from '../../utils/bindFunctions';
-import { createOfficialRoute } from './store/routesActions';
+import { createOfficialRoute } from './store/actions';
 import Form from './Form';
 
 class Create extends Form {

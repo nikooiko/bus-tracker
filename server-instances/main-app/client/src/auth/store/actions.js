@@ -1,9 +1,9 @@
 import api from '../../utils/api';
 import { routerActions } from 'react-router-redux';
 
-import { AUTH_USER, UNAUTH_USER } from './authTypes';
+import { AUTH_USER, UNAUTH_USER } from './types';
 import { routeAfterAuth, routeAfterUnauth } from '../authConfig';
-import { showToast } from '../../toast/store/toastActions';
+import { showToast } from '../../toast/store/actions';
 
 export const login = (credentials) => {
   return (dispatch) => {

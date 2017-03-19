@@ -14,7 +14,7 @@ import BusRouteCreate from '../dashboard/bus-routes/Create';
 import BusRouteEdit from '../dashboard/bus-routes/Edit';
 import Users from '../dashboard/users/List';
 import Home from '../home/Home';
-import { hideToast } from '../toast/store/toastActions';
+import { hideToast } from '../toast/store/actions';
 
 export default (store) => {
   const routeChangeHandler = () => {

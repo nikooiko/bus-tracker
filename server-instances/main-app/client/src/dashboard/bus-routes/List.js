@@ -15,8 +15,8 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import Navbar from '../navigation/Navbar';
 import Loading from '../../common/Loading';
 import bindFunctions from '../../utils/bindFunctions';
-import { removeOfficialRoute } from './store/routesActions';
-import { closeSidebar } from '../navigation/sidebar/store/sidebarActions';
+import { removeOfficialRoute } from './store/actions';
+import { closeSidebar } from '../navigation/sidebar/store/actions';
 
 export class List extends React.Component {
   constructor(props, content) {
@@ -98,6 +98,14 @@ export class List extends React.Component {
             {addControl}
           </Header>
           <GrommetList selectable={false}>
+            <ListItem
+              key={0} direction="row" align="center" justify="between" separator='horizontal'
+              pad={{horizontal: 'medium', vertical: 'small', between: 'medium'}} responsive={false}
+            >
+              <span><b>Name</b></span>
+              <span><b>Route ID</b></span>
+              <span><b>Actions</b></span>
+            </ListItem>
             {routes.map((route) => this.renderRoute(route))}
           </GrommetList>
           <ListPlaceholder

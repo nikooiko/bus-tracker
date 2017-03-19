@@ -1,5 +1,5 @@
 import api from '../../../utils/api';
-import { showToast } from '../../../toast/store/toastActions';
+import { showToast } from '../../../toast/store/actions';
 import { SET_USERS, UPDATE_USER, REMOVE_USER, SET_IS_FETCHING } from './types';
 
 // Sync Action Creators
