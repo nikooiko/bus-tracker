@@ -9,7 +9,6 @@
 *.swo
 *.swp
 *.tgz
-*.xml
 .DS_Store
 .idea
 .project
@@ -21,5 +20,4 @@ npm-debug.log
 dist
 out
 *.pass
-fogFiles
 .datastore

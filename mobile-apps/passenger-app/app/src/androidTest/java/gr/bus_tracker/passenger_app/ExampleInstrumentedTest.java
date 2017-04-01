@@ -1,4 +1,4 @@
-package com.bus_tracker.passengerapp;
+package gr.bus_tracker.passenger_app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.bus_tracker.passengerapp", appContext.getPackageName());
+        assertEquals("gr.bus_tracker.passenger_app", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.bus_tracker.passengerapp;
+package gr.bus_tracker.passenger_app;
 
 import org.junit.Test;
 
