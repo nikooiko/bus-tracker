@@ -10,12 +10,31 @@ module.exports = (AppUser) => {
   });
 
   /**
+   * Temporary Remote hook that currently solves this
+   * [issue](https://github.com/strongloop/loopback-sdk-android/issues/82).
+   * Checks if a username is provided and if not then it validates email and if it's invalid
+   * (e.g no @) then it copies the email into username.
+   */
+  AppUser.beforeRemote('login', (ctx, unused, next) => {
+    const body = ctx.req.body;
+    if (body.username) return next(); // if username already given then go to next
+    const email = body.email;
+    if (!email) return next(); // if not provided email then go to next
+    // if it's a valid email (for now only check for @) then go to next
+    if (email.indexOf('@') !== -1) return next();
+    body.username = email; // simply move the email into username
+    delete body.email; // delete because it will make the request fail.
+    return next();
+  });
+
+  /**
    * Remote hook that appends user roles on the result.
    */
   AppUser.afterRemote('login', (ctx, result) =>
     AppUser.getUserRoles(result.userId)
       .then((roles) => {
         result.roles = roles;
+        result.__data.user.roles(roles);
       })
   );
 

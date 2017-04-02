@@ -22,7 +22,7 @@ export const login = (credentials) => {
       .then(response => {
         const rememberMe = credentials.rememberMe;
         const accessToken = response.data.id;
-        const isAdmin = (response.data.roles.indexOf('admin') != -1);
+        const isAdmin = (response.data.roles.indexOf('admin') !== -1);
         api.setAuthenticationHeader(accessToken); // add before check if admin in order to logout.
         if (!isAdmin) {
           // Logout because this dashboard is made only for admin.
