@@ -1,4 +1,4 @@
-package gr.bus_tracker.driverapp;
+package gr.bus_tracker.driver_app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("gr.bus_tracker.driverapp", appContext.getPackageName());
+        assertEquals("gr.bus_tracker.driver_app", appContext.getPackageName());
     }
 }

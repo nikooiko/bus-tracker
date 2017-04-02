@@ -1,4 +1,4 @@
-package gr.bus_tracker.driverapp;
+package gr.bus_tracker.driver_app;
 
 import org.junit.Test;
 

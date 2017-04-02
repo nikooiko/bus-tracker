@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY baseURL "http://10.0.2.2:3000">
+    <!ENTITY api "/api">
+]>
+<resources>
+    <string name="baseURL">&baseURL;</string>
+    <string name="apiURL">&baseURL;&api;</string>
+    <string name="loginURL">&baseURL;&api;/AppUsers/login</string>
+    <string name="logoutURL">&baseURL;&api;/AppUsers/logout</string>
+    <string name="registerURL">&baseURL;&api;/AppUsers</string>
+</resources>

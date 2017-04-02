@@ -1,4 +1,4 @@
-package gr.bus_tracker.driverapp;
+package gr.bus_tracker.driver_app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
