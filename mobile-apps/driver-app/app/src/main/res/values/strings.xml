@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Driver\'s application</string>
+    <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeatPassword">Repeat Password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="registerHere">Register Here</string>
+    <string name="toastMessage">toast</string>
 </resources>

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class AppUser extends User {
 	private LatLng location;
-	private JSONObject relations;
 	private ArrayList<String> roles;
+	private String username;
 
 	public LatLng getLocation() {
 		return location;
@@ -22,14 +22,6 @@ public class AppUser extends User {
 
 	public void setLocation(LatLng location) {
 		this.location = location;
-	}
-
-	public JSONObject getRelations() {
-		return relations;
-	}
-
-	public void setRelations(JSONObject relations) {
-		this.relations = relations;
 	}
 
 	public ArrayList<String> getRoles() {
@@ -45,5 +37,20 @@ public class AppUser extends User {
 			if (role.equals(sRole)) return true;
 		}
 		return false;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getEmail() {
+		return super.getEmail();
+	}
+	public String getPassword() {
+		return super.getPassword();
 	}
 }

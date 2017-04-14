@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.strongloop.android.loopback.AccessToken;
 
@@ -20,6 +21,8 @@ import gr.bus_tracker.driver_app.models.AppUserRepository;
 public class LoginActivity extends AppCompatActivity {
 	// Resources
 	private String DRIVER_ROLE;
+	private String TOAST_MESSAGE;
+
 	// Properties
 	private AppUserRepository appUserRepo;
 	private EditText etUsername;
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		// get all needed resources
 		DRIVER_ROLE = res.getString(R.string.driverRole);
+		TOAST_MESSAGE = res.getString(R.string.toastMessage);
 
 		// init properties
 		etUsername = (EditText) findViewById(R.id.etUsername);
@@ -45,7 +49,18 @@ public class LoginActivity extends AppCompatActivity {
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		tvRegister = (TextView) findViewById(R.id.tvRegister);
 
-		setupRegister();
+		// check if intent contains username and password
+		Intent intent = getIntent();
+		String username = intent.getStringExtra("username");
+		etUsername.setText(username);
+		String password = intent.getStringExtra("password");
+		etPassword.setText(password);
+
+		// check if intent contains toast message
+		String toastMsg = intent.getStringExtra(TOAST_MESSAGE);
+		Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+
+		setupGotoRegister();
 		setupLogin();
 	}
 
@@ -58,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 		});
 	}
 
-	private void setupRegister() {
+	private void setupGotoRegister() {
 		tvRegister.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
