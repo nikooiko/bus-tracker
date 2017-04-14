@@ -1,0 +1,11 @@
+.enable-driver {
+  border: 3px solid transparent !important;
+}
+
+.disable-driver {
+  border: 3px solid nth($brand-neutral-colors, 2) !important;
+}
+
+.delete-user {
+  border: 3px solid nth($brand-accent-colors, 2) !important;
+}

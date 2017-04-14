@@ -1,6 +1,8 @@
 @import './customTheme.scss'; // important to be before grommet imports
 @import '~grommet/scss/grommet-core/index';
 @import '~grommet/scss/vanilla/objects.button-vanilla';
+@import './dashboard/users/users.scss';
+
   // Logo dimensions
 .nav-logo {
   max-width: 200px !important;

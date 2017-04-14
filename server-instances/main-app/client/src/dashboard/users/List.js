@@ -5,10 +5,13 @@ import Button from 'grommet/components/Button';
 import Header from 'grommet/components/Header';
 import Search from 'grommet/components/Search';
 import DriverIcon from 'grommet/components/icons/base/Bus';
+import PassengerIcon from 'grommet/components/icons/base/User';
 import DeleteIcon from 'grommet/components/icons/base/Trash';
 import GrommetList from 'grommet/components/List';
 import ListItem from 'grommet/components/ListItem';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
+import Legend from 'grommet/components/Legend';
+
 import Navbar from '../navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
 import { enableDriver, disableDriver, deleteUser } from './store/actions';
@@ -86,14 +89,16 @@ export class List extends React.Component {
       toggleDriverBtn = (
         <Button
           icon={<DriverIcon/>} a11yTitle={'Disable Driver\'s privileges'}
-          onClick={this.onDisableDriver(userId)} label='Disable Driver' accent={true}
+          onClick={this.onDisableDriver(userId)} secondary={true}
+          className='disable-driver'
         />
       );
     } else {
       toggleDriverBtn = (
         <Button
-          icon={<DriverIcon/>} a11yTitle={'Enable Driver\'s privileges'}
-          onClick={this.onEnableDriver(userId)} label='Enable Driver' secondary={true}
+          icon={<PassengerIcon/>} a11yTitle={'Enable Driver\'s privileges'}
+          onClick={this.onEnableDriver(userId)} accent={true}
+          className='enable-driver'
         />
       );
     }
@@ -103,12 +108,12 @@ export class List extends React.Component {
         pad={{horizontal: 'medium', vertical: 'small', between: 'medium'}} responsive={false}
       >
         <span>{user.username}</span>
-        <span>{isDriver ? 'driver' : 'passenger'}</span>
-        <Box direction='row'>
+        <Box direction='row' responsive={false} pad={{between: 'small'}}>
           {toggleDriverBtn}
           <Button
             icon={<DeleteIcon/>} a11yTitle={'Delete user'}
             onClick={this.deleteUser(userId)}
+            className='delete-user'
           />
         </Box>
       </ListItem>
@@ -122,6 +127,20 @@ export class List extends React.Component {
     } else {
       const users = this.props.users.users;
       const filteredUsers = users; // dummy for now
+      let legend = null;
+      if (users.length > 0) {
+        legend = (
+          <Legend
+            series={[
+              {'label': 'Drivers', 'colorIndex': 'neutral-2'},
+              {'label': 'Passengers', 'colorIndex': 'unset'}
+            ]}
+            onClick={false}
+            total={false}
+            size='medium'
+          />
+        );
+      }
       content = (
         <Box>
           <Header size='medium' pad={{ horizontal: 'medium' }}>
@@ -136,7 +155,6 @@ export class List extends React.Component {
               pad={{horizontal: 'medium', vertical: 'small', between: 'medium'}} responsive={false}
             >
               <span><b>Username</b></span>
-              <span><b>Role</b></span>
               <span><b>Actions</b></span>
             </ListItem>
             {users.map((user) => this.renderUser(user))}
@@ -146,6 +164,7 @@ export class List extends React.Component {
             unfilteredTotal={users.length}
             emptyMessage='Currently there are no users.'
           />
+          {legend}
         </Box>
       );
     }

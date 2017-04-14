@@ -4,7 +4,7 @@ $logo-colors: (#007499, #FF7D28, #ED0004);
 // Bypass Grommet Color Theme
 $brand-color: (nth($logo-colors, 1));
 $brand-neutral-colors: (#0A64A0, #5EBB49, #501EB4, #49516F);
-$brand-accent-colors: (nth($logo-colors, 2));
+$brand-accent-colors: (nth($logo-colors, 2), nth($logo-colors, 3));
 $brand-link-color: #865CD6;
 $brand-status-colors: (
         critical: #FF324D,
