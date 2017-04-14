@@ -6,6 +6,6 @@
     <string name="repeatPassword">Repeat Password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="registerHere">Register Here</string>
+    <string name="registerHere">No Account yet? Create one</string>
     <string name="toastMessage">toast</string>
 </resources>
