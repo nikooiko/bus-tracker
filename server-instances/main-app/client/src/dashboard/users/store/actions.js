@@ -107,3 +107,25 @@ export const disableDriver = (userId) => {
       });
   };
 };
+
+export const deleteUser = (userId) => {
+  return (dispatch) => {
+    return api.del(`/AppUsers/${userId}`)
+      .then(() => {
+        dispatch(removeUser(userId));
+        const message = 'Deleted user successfully.';
+        dispatch(showToast({
+          message,
+          status: 'ok'
+        }));
+      })
+      .catch((err) => {
+        console.error(err.message);
+        const message = 'Failed to delete user.';
+        dispatch(showToast({
+          message,
+          status: 'critical'
+        }));
+      });
+  };
+};

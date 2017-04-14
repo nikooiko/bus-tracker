@@ -5,12 +5,13 @@ import Button from 'grommet/components/Button';
 import Header from 'grommet/components/Header';
 import Search from 'grommet/components/Search';
 import DriverIcon from 'grommet/components/icons/base/Bus';
+import DeleteIcon from 'grommet/components/icons/base/Trash';
 import GrommetList from 'grommet/components/List';
 import ListItem from 'grommet/components/ListItem';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import Navbar from '../navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
-import { enableDriver, disableDriver } from './store/actions';
+import { enableDriver, disableDriver, deleteUser } from './store/actions';
 
 export class List extends React.Component {
   constructor(props, content) {
@@ -45,7 +46,7 @@ export class List extends React.Component {
    */
   onEnableDriver(userId) {
     return () => {
-      this.props.enableDriver(userId); // TODO
+      this.props.enableDriver(userId);
     };
   }
 
@@ -58,26 +59,38 @@ export class List extends React.Component {
    */
   onDisableDriver(userId) {
     return () => {
-      this.props.disableDriver(userId); // TODO
+      this.props.disableDriver(userId);
     };
   }
 
+  /**
+   * Used to delete a user.
+   *
+   * @method deleteUser
+   * @param userId
+   * @returns {Function}
+   */
+  deleteUser(userId) {
+    return () => {
+      this.props.deleteUser(userId);
+    }
+  }
 
   renderUser(user) {
     const userId = user.id;
     const roles = user.roles;
     if (roles.findIndex(List.findRole('admin')) !== -1) return null; // ignore admin
-    let button;
+    let toggleDriverBtn;
     const isDriver = roles.findIndex(List.findRole('driver')) !== -1;
     if (isDriver) {
-      button = (
+      toggleDriverBtn = (
         <Button
           icon={<DriverIcon/>} a11yTitle={'Disable Driver\'s privileges'}
           onClick={this.onDisableDriver(userId)} label='Disable Driver' accent={true}
         />
       );
     } else {
-      button = (
+      toggleDriverBtn = (
         <Button
           icon={<DriverIcon/>} a11yTitle={'Enable Driver\'s privileges'}
           onClick={this.onEnableDriver(userId)} label='Enable Driver' secondary={true}
@@ -91,7 +104,13 @@ export class List extends React.Component {
       >
         <span>{user.username}</span>
         <span>{isDriver ? 'driver' : 'passenger'}</span>
-        {button}
+        <Box direction='row'>
+          {toggleDriverBtn}
+          <Button
+            icon={<DeleteIcon/>} a11yTitle={'Delete user'}
+            onClick={this.deleteUser(userId)}
+          />
+        </Box>
       </ListItem>
     );
   }
@@ -143,4 +162,4 @@ const mapStateToProps = (state) => ({
   users: state.users
 });
 
-export default connect(mapStateToProps, { enableDriver, disableDriver })(List);
+export default connect(mapStateToProps, { enableDriver, disableDriver, deleteUser })(List);
