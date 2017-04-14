@@ -34,7 +34,6 @@ module.exports = (AppUser) => {
     AppUser.getUserRoles(result.userId)
       .then((roles) => {
         result.roles = roles;
-        result.__data.user.roles(roles);
       })
   );
 
