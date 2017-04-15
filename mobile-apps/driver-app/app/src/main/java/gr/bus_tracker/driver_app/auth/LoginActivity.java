@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.strongloop.android.loopback.AccessToken;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -115,7 +116,10 @@ public class LoginActivity extends AppCompatActivity {
 		final String username = etUsername.getText().toString();
 		final String password = etPassword.getText().toString();
 		// Send the request
-		appUserRepo.loginUser(username, password, loginCallback(username));
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("username",  username);
+		params.put("password",  password);
+		appUserRepo.loginUser(params, loginCallback());
 	}
 
 	private void validateUsername() {
@@ -153,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 		btnLogin.setEnabled(!inputError); // if no error then enable btn
 	}
 
-	private AppUserRepository.LoginCallback<AppUser> loginCallback(final String username) {
+	private AppUserRepository.LoginCallback<AppUser> loginCallback() {
 		return new AppUserRepository.LoginCallback<AppUser>() {
 			@Override
 			public void onSuccess(AccessToken token, AppUser currentUser) {
@@ -161,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
 				currentUser.setRoles(roles);
 				if (currentUser.hasRole(DRIVER_ROLE)) {
 					Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
-					intent.putExtra("username", username);
 					LoginActivity.this.startActivity(intent);
 				} else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
