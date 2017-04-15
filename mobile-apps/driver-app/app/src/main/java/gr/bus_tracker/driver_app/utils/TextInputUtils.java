@@ -17,19 +17,8 @@ public abstract class TextInputUtils {
 		return matcher.matches();
 	}
 
-	public static boolean isValidPassword(String string, boolean allowSpecialChars){
-		String PATTERN;
-		if(allowSpecialChars){
-			//PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
-			PATTERN = "^[a-zA-Z@#$%]\\w{5,19}$";
-		}else{
-			//PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
-			PATTERN = "^[a-zA-Z]\\w{5,19}$";
-		}
-
-		Pattern pattern = Pattern.compile(PATTERN);
-		Matcher matcher = pattern.matcher(string);
-		return matcher.matches();
+	public static boolean isValidPassword(String string){
+		return true; // TODO password pattern match.
 	}
 
 	public static boolean isNullOrEmpty(String string){
@@ -38,5 +27,9 @@ public abstract class TextInputUtils {
 
 	public static boolean isNumeric(String string){
 		return TextUtils.isDigitsOnly(string);
+	}
+
+	public static boolean isValidUsername(String username) {
+		return true; // TODO username pattern match.
 	}
 }

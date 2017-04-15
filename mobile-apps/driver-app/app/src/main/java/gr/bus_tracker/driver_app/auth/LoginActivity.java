@@ -2,6 +2,7 @@ package gr.bus_tracker.driver_app.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -36,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
 	@BindString(R.string.requiredError) String REQUIRED_ERROR;
 
 	// Fields
+	@BindView(R.id.etUsernameLayout) TextInputLayout etUsernameLayout;
+	@BindView(R.id.etPasswordLayout) TextInputLayout etPasswordLayout;
 	@BindView(R.id.etUsername) EditText etUsername;
 	@BindView(R.id.etPassword) EditText etPassword;
 	@BindView(R.id.btnLogin) Button btnLogin;
@@ -60,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		// check if intent contains toast message
 		String toastMsg = intent.getStringExtra(TOAST_MESSAGE);
-		Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, toastMsg, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -77,22 +80,22 @@ public class LoginActivity extends AppCompatActivity {
 
 	@OnFocusChange(R.id.etUsername)
 	void onUsernameFocusChange(boolean hasFocus) {
-		if (!hasFocus) LoginActivity.this.validateUsername();
+		if (!hasFocus) validateUsername();
 	}
 
 	@OnTextChanged(R.id.etUsername)
 	void onUsernameChange() {
-		LoginActivity.this.validateUsername();
+		validateUsername();
 	}
 
 	@OnFocusChange(R.id.etPassword)
 	void onPasswordFocusChange(boolean hasFocus) {
-		if (!hasFocus) LoginActivity.this.validatePassword();
+		if (!hasFocus) validatePassword();
 	}
 
 	@OnTextChanged(R.id.etPassword)
 	void onPasswordChange() {
-		LoginActivity.this.validatePassword();
+		validatePassword();
 	}
 
 	@OnClick(R.id.btnLogin)
@@ -101,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 		validateUsername(false);
 		validatePassword(false);
 		updateLoginBtn();
-		// continue only if after previous actions buttonn is still enabled
+		// continue only if after previous actions button is still enabled
 		if (!btnLogin.isEnabled()) return;
 
 		// Get input fields
@@ -118,11 +121,11 @@ public class LoginActivity extends AppCompatActivity {
 	private void validateUsername(boolean shouldUpdate) {
 		String username = etUsername.getText().toString();
 		if (TextInputUtils.isNullOrEmpty(username)) {
-			etUsername.setError(REQUIRED_ERROR);
+			etUsernameLayout.setError(REQUIRED_ERROR);
 		} else {
-			etUsername.setError(null);
+			etUsernameLayout.setError(null);
 		}
-		if (shouldUpdate) LoginActivity.this.updateLoginBtn();
+		if (shouldUpdate) updateLoginBtn();
 	}
 
 	private void validatePassword() {
@@ -132,17 +135,17 @@ public class LoginActivity extends AppCompatActivity {
 	private void validatePassword(boolean shouldUpdate) {
 		String password = etPassword.getText().toString();
 		if (TextInputUtils.isNullOrEmpty(password)) {
-			etPassword.setError(REQUIRED_ERROR);
+			etPasswordLayout.setError(REQUIRED_ERROR);
 		} else {
-			etPassword.setError(null);
+			etPasswordLayout.setError(null);
 		}
-		if (shouldUpdate) LoginActivity.this.updateLoginBtn();
+		if (shouldUpdate) updateLoginBtn();
 	}
 
 	private void updateLoginBtn() {
 		boolean inputError = false;
-		if (etUsername.getError() != null) inputError = true;
-		if (etPassword.getError() != null) inputError = true;
+		if (etUsernameLayout.getError() != null) inputError = true;
+		if (etPasswordLayout.getError() != null) inputError = true;
 		btnLogin.setEnabled(!inputError); // if no error then enable btn
 	}
 

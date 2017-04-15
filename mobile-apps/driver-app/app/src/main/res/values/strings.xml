@@ -10,4 +10,8 @@
     <string name="toastMessage">toast</string>
     <string name="logo">logo</string>
     <string name="requiredError">Required!</string>
+    <string name="emailError">Invalid Email!</string>
+    <string name="usernameError">Invalid Username! TODO pattern!</string>
+    <string name="repeatPasswordError">Password doesn\'t match!</string>
+    <string name="passwordError">Invalid Password! TODO pattern!</string>
 </resources>
