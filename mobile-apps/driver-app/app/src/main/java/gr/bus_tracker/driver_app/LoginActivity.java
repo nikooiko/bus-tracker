@@ -69,6 +69,12 @@ public class LoginActivity extends AppCompatActivity {
 		setupLogin();
 	}
 
+	@Override
+	public void onBackPressed() {
+		// disable going back to the MainActivity
+		moveTaskToBack(true);
+	}
+
 	private void setupLogin() {
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -86,26 +92,6 @@ public class LoginActivity extends AppCompatActivity {
 				LoginActivity.this.startActivity(registerIntent);
 			}
 		});
-	}
-
-	private void validateUsername() {
-		String username = etUsername.getText().toString();
-		if (TextInputUtils.isNullOrEmpty(username)) {
-			etUsername.setError(REQUIRED_ERROR);
-		} else {
-			etUsername.setError(null);
-		}
-		LoginActivity.this.updateLoginBtn();
-	}
-
-	private void validatePassword() {
-		String password = etPassword.getText().toString();
-		if (TextInputUtils.isNullOrEmpty(password)) {
-			etPassword.setError(REQUIRED_ERROR);
-		} else {
-			etPassword.setError(null);
-		}
-		LoginActivity.this.updateLoginBtn();
 	}
 
 	private void setupValidators() {
@@ -135,6 +121,26 @@ public class LoginActivity extends AppCompatActivity {
 				LoginActivity.this.validatePassword();
 			}
 		});
+	}
+
+	private void validateUsername() {
+		String username = etUsername.getText().toString();
+		if (TextInputUtils.isNullOrEmpty(username)) {
+			etUsername.setError(REQUIRED_ERROR);
+		} else {
+			etUsername.setError(null);
+		}
+		LoginActivity.this.updateLoginBtn();
+	}
+
+	private void validatePassword() {
+		String password = etPassword.getText().toString();
+		if (TextInputUtils.isNullOrEmpty(password)) {
+			etPassword.setError(REQUIRED_ERROR);
+		} else {
+			etPassword.setError(null);
+		}
+		LoginActivity.this.updateLoginBtn();
 	}
 
 	private void updateLoginBtn() {
