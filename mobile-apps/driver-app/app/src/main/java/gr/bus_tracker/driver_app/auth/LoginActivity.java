@@ -54,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
 		final DriverApplication app = (DriverApplication)getApplication();
 		appUserRepo = app.getAppUserRepository();
 
+		// enable error handlers to avoid layout changes.
+		etUsernameLayout.setErrorEnabled(true);
+		etPasswordLayout.setErrorEnabled(true);
+
 		// check if intent contains username and password
 		Intent intent = getIntent();
 		String username = intent.getStringExtra("username");

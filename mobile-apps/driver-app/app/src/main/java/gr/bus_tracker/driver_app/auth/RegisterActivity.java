@@ -54,6 +54,12 @@ public class RegisterActivity extends AppCompatActivity {
 		// get needed models
 		final DriverApplication app = (DriverApplication)getApplication();
 		appUserRepo = app.getAppUserRepository();
+
+		// enable error handlers to avoid layout changes.
+		etEmailLayout.setErrorEnabled(true);
+		etUsernameLayout.setErrorEnabled(true);
+		etPasswordLayout.setErrorEnabled(true);
+		etRepeatPasswordLayout.setErrorEnabled(true);
 	}
 
 	@OnFocusChange(R.id.etEmail)

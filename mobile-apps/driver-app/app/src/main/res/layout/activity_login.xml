@@ -27,10 +27,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/etUsernameLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            >
-
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
@@ -43,10 +40,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/etPasswordLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            >
-
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
@@ -60,8 +54,6 @@
             android:id="@+id/btnLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:padding="16dp"
             android:text="@string/login"/>
 
@@ -69,7 +61,7 @@
             android:id="@+id/tvRegister"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/registerHere"
             android:gravity="center"
             android:textSize="16sp"/>
