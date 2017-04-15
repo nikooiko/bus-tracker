@@ -1,4 +1,4 @@
-package gr.bus_tracker.driver_app;
+package gr.bus_tracker.driver_app.auth;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
+import gr.bus_tracker.driver_app.DriverApplication;
+import gr.bus_tracker.driver_app.R;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 

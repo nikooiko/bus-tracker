@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gr.bus_tracker.driver_app.RegisterActivity">
+    tools:context="gr.bus_tracker.driver_app.auth.RegisterActivity">
 
     <EditText
         android:id="@+id/etEmail"

@@ -6,7 +6,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    tools:context="gr.bus_tracker.driver_app.LoginActivity">
+    tools:context="gr.bus_tracker.driver_app.auth.LoginActivity">
 
     <LinearLayout
         android:orientation="vertical"

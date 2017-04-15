@@ -1,11 +1,9 @@
-package gr.bus_tracker.driver_app;
+package gr.bus_tracker.driver_app.auth;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,10 +19,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import butterknife.OnTextChanged;
+import gr.bus_tracker.driver_app.DriverApplication;
+import gr.bus_tracker.driver_app.R;
+import gr.bus_tracker.driver_app.UserAreaActivity;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.utils.TextInputUtils;
-import gr.bus_tracker.driver_app.utils.TextInputValidator;
 
 public class LoginActivity extends AppCompatActivity {
 	// Repositories/Models
