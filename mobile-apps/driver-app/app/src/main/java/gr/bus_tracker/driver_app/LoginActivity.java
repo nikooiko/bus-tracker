@@ -15,58 +15,52 @@ import com.strongloop.android.loopback.AccessToken;
 
 import java.util.ArrayList;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnFocusChange;
+import butterknife.OnTextChanged;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.utils.TextInputUtils;
 import gr.bus_tracker.driver_app.utils.TextInputValidator;
 
 public class LoginActivity extends AppCompatActivity {
-	// Resources
-	private String DRIVER_ROLE;
-	private String TOAST_MESSAGE;
-	private String REQUIRED_ERROR;
-
-	// Properties
+	// Repositories/Models
 	private AppUserRepository appUserRepo;
-	private EditText etUsername;
-	private EditText etPassword;
-	private Button btnLogin;
-	private TextView tvRegister;
+
+	// Resources
+	@BindString(R.string.driverRole) String DRIVER_ROLE;
+	@BindString(R.string.toastMessage) String TOAST_MESSAGE;
+	@BindString(R.string.requiredError) String REQUIRED_ERROR;
+
+	// Fields
+	@BindView(R.id.etUsername) EditText etUsername;
+	@BindView(R.id.etPassword) EditText etPassword;
+	@BindView(R.id.btnLogin) Button btnLogin;
+	@BindView(R.id.tvRegister) TextView tvRegister;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		Resources res = getResources();
+		ButterKnife.bind(this);
+
 		// get needed models
 		final DriverApplication app = (DriverApplication)getApplication();
 		appUserRepo = app.getAppUserRepository();
 
-		// get all needed resources
-		DRIVER_ROLE = res.getString(R.string.driverRole);
-		TOAST_MESSAGE = res.getString(R.string.toastMessage);
-		REQUIRED_ERROR = res.getString(R.string.requiredError);
-
-		// init properties
-		etUsername = (EditText) findViewById(R.id.etUsername);
-		etPassword = (EditText) findViewById(R.id.etPassword);
-		btnLogin = (Button) findViewById(R.id.btnLogin);
-		tvRegister = (TextView) findViewById(R.id.tvRegister);
-
 		// check if intent contains username and password
 		Intent intent = getIntent();
 		String username = intent.getStringExtra("username");
-		etUsername.setText(username);
+		if (username != null) etUsername.setText(username);
 		String password = intent.getStringExtra("password");
-		etPassword.setText(password);
+		if (password != null) etPassword.setText(password);
 
 		// check if intent contains toast message
 		String toastMsg = intent.getStringExtra(TOAST_MESSAGE);
 		Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
-
-		setupValidators();
-		setupGotoRegister();
-		setupLogin();
 	}
 
 	@Override
@@ -75,72 +69,74 @@ public class LoginActivity extends AppCompatActivity {
 		moveTaskToBack(true);
 	}
 
-	private void setupLogin() {
-		btnLogin.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				LoginActivity.this.sendLoginRequest();
-			}
-		});
+	@OnClick(R.id.tvRegister)
+	void onGotoRegister() {
+		Intent registerIntent = new Intent(this, RegisterActivity.class);
+		startActivity(registerIntent);
 	}
 
-	private void setupGotoRegister() {
-		tvRegister.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-				LoginActivity.this.startActivity(registerIntent);
-			}
-		});
+	@OnFocusChange(R.id.etUsername)
+	void onUsernameFocusChange(boolean hasFocus) {
+		if (!hasFocus) LoginActivity.this.validateUsername();
 	}
 
-	private void setupValidators() {
-		// username validators
-		etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) LoginActivity.this.validateUsername();
-			}
-		});
-		etUsername.addTextChangedListener(new TextInputValidator() {
-			@Override
-			public void validate() {
-				LoginActivity.this.validateUsername();
-			}
-		});
-		// password validators
-		etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) LoginActivity.this.validatePassword();
-			}
-		});
-		etPassword.addTextChangedListener(new TextInputValidator() {
-			@Override
-			public void validate() {
-				LoginActivity.this.validatePassword();
-			}
-		});
+	@OnTextChanged(R.id.etUsername)
+	void onUsernameChange() {
+		LoginActivity.this.validateUsername();
+	}
+
+	@OnFocusChange(R.id.etPassword)
+	void onPasswordFocusChange(boolean hasFocus) {
+		if (!hasFocus) LoginActivity.this.validatePassword();
+	}
+
+	@OnTextChanged(R.id.etPassword)
+	void onPasswordChange() {
+		LoginActivity.this.validatePassword();
+	}
+
+	@OnClick(R.id.btnLogin)
+	void onLogin() {
+		// One last validation in case somehow bypassed validators
+		validateUsername(false);
+		validatePassword(false);
+		updateLoginBtn();
+		// continue only if after previous actions buttonn is still enabled
+		if (!btnLogin.isEnabled()) return;
+
+		// Get input fields
+		final String username = etUsername.getText().toString();
+		final String password = etPassword.getText().toString();
+		// Send the request
+		appUserRepo.loginUser(username, password, loginCallback(username));
 	}
 
 	private void validateUsername() {
+		validateUsername(true);
+	}
+
+	private void validateUsername(boolean shouldUpdate) {
 		String username = etUsername.getText().toString();
 		if (TextInputUtils.isNullOrEmpty(username)) {
 			etUsername.setError(REQUIRED_ERROR);
 		} else {
 			etUsername.setError(null);
 		}
-		LoginActivity.this.updateLoginBtn();
+		if (shouldUpdate) LoginActivity.this.updateLoginBtn();
 	}
 
 	private void validatePassword() {
+		validatePassword(true);
+	}
+
+	private void validatePassword(boolean shouldUpdate) {
 		String password = etPassword.getText().toString();
 		if (TextInputUtils.isNullOrEmpty(password)) {
 			etPassword.setError(REQUIRED_ERROR);
 		} else {
 			etPassword.setError(null);
 		}
-		LoginActivity.this.updateLoginBtn();
+		if (shouldUpdate) LoginActivity.this.updateLoginBtn();
 	}
 
 	private void updateLoginBtn() {
@@ -148,14 +144,6 @@ public class LoginActivity extends AppCompatActivity {
 		if (etUsername.getError() != null) inputError = true;
 		if (etPassword.getError() != null) inputError = true;
 		btnLogin.setEnabled(!inputError); // if no error then enable btn
-	}
-
-	private void sendLoginRequest() {
-		// Get input fields
-		final String username = etUsername.getText().toString();
-		final String password = etPassword.getText().toString();
-		// Send the request
-		appUserRepo.loginUser(username, password, loginCallback(username));
 	}
 
 	private AppUserRepository.LoginCallback<AppUser> loginCallback(final String username) {
