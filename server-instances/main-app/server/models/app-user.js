@@ -10,32 +10,65 @@ module.exports = (AppUser) => {
   });
 
   /**
-   * Temporary Remote hook that currently solves this
-   * [issue](https://github.com/strongloop/loopback-sdk-android/issues/82).
-   * Checks if a username is provided and if not then it validates email and if it's invalid
-   * (e.g no @) then it copies the email into username.
+   * Remote hook that checks if user wants to login after checking if he has a specific role. This
+   * is useful to avoid round-trip requests for admin dashboard or driver's app that in order
+   * to operate without errors logged in user must contain specific rights.
+   *
    */
   AppUser.beforeRemote('login', (ctx, unused, next) => {
     const body = ctx.req.body;
-    if (body.username) return next(); // if username already given then go to next
-    const email = body.email;
-    if (!email) return next(); // if not provided email then go to next
-    // if it's a valid email (for now only check for @) then go to next
-    if (email.indexOf('@') !== -1) return next();
-    body.username = email; // simply move the email into username
-    delete body.email; // delete because it will make the request fail.
-    return next();
+
+    // If requested login with specific role then request roles to check if applies
+    const requestedRole = body.loginAsRole;
+    if (requestedRole) {
+      // get the user id based on username or email
+      const where = {};
+      if (body.username) {
+        where.username = body.username;
+      } else {
+        where.email = body.email;
+      }
+      AppUser.findOne({ fields: 'id', where })
+        .then((user) => {
+          if (!user) return next(); // if no user then just forward to next hook
+          return AppUser.getUserRoles(user.id)
+            .then((roles) => {
+              if (!roles) return next();
+              // check if applies to the requestedRoles
+              let i = -1;
+              const len = roles.length - 1;
+              let applies = false;
+              while (i++ < len) {
+                if (roles[i] === requestedRole) {
+                  applies = true;
+                  break;
+                }
+              }
+              if (!applies) {
+                return next(httpError('Unauthorized', 401));
+              }
+              ctx.result.roles = roles; // also append roles to result for later use if needed.
+              return next();
+            });
+        })
+        .catch(() => next()); // if error occurs simple forward to next hook.
+      return;
+    }
+    next();
   });
 
   /**
    * Remote hook that appends user roles on the result.
    */
-  AppUser.afterRemote('login', (ctx, result) =>
-    AppUser.getUserRoles(result.userId)
-      .then((roles) => {
-        result.roles = roles;
-      })
-  );
+  AppUser.afterRemote('login', (ctx, result) => {
+    const roles = result.roles; // maybe already calculated on beforeHook.
+    // if roles not already requested, send a new request
+    let promise = Promise.resolve(roles);
+    if (!roles) promise = AppUser.getUserRoles(result.userId);
+    return promise.then((foundRoles) => {
+      result.roles = foundRoles;
+    });
+  });
 
   AppUser.setRole = function setRole(userId, roleName, shouldRemove) {
     const appModels = AppUser.app.models;
