@@ -8,4 +8,5 @@
     <string name="register">Register</string>
     <string name="registerHere">No Account yet? Create one</string>
     <string name="toastMessage">toast</string>
+    <string name="logo">logo</string>
 </resources>
