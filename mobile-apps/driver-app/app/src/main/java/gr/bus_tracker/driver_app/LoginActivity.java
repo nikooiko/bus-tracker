@@ -17,11 +17,14 @@ import java.util.ArrayList;
 
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
+import gr.bus_tracker.driver_app.utils.TextInputUtils;
+import gr.bus_tracker.driver_app.utils.TextInputValidator;
 
 public class LoginActivity extends AppCompatActivity {
 	// Resources
 	private String DRIVER_ROLE;
 	private String TOAST_MESSAGE;
+	private String REQUIRED_ERROR;
 
 	// Properties
 	private AppUserRepository appUserRepo;
@@ -42,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 		// get all needed resources
 		DRIVER_ROLE = res.getString(R.string.driverRole);
 		TOAST_MESSAGE = res.getString(R.string.toastMessage);
+		REQUIRED_ERROR = res.getString(R.string.requiredError);
 
 		// init properties
 		etUsername = (EditText) findViewById(R.id.etUsername);
@@ -60,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 		String toastMsg = intent.getStringExtra(TOAST_MESSAGE);
 		Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
 
+		setupValidators();
 		setupGotoRegister();
 		setupLogin();
 	}
@@ -81,6 +86,62 @@ public class LoginActivity extends AppCompatActivity {
 				LoginActivity.this.startActivity(registerIntent);
 			}
 		});
+	}
+
+	private void validateUsername() {
+		String username = etUsername.getText().toString();
+		if (TextInputUtils.isNullOrEmpty(username)) {
+			etUsername.setError(REQUIRED_ERROR);
+		} else {
+			etUsername.setError(null);
+		}
+		LoginActivity.this.updateLoginBtn();
+	}
+
+	private void validatePassword() {
+		String password = etPassword.getText().toString();
+		if (TextInputUtils.isNullOrEmpty(password)) {
+			etPassword.setError(REQUIRED_ERROR);
+		} else {
+			etPassword.setError(null);
+		}
+		LoginActivity.this.updateLoginBtn();
+	}
+
+	private void setupValidators() {
+		// username validators
+		etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) LoginActivity.this.validateUsername();
+			}
+		});
+		etUsername.addTextChangedListener(new TextInputValidator() {
+			@Override
+			public void validate() {
+				LoginActivity.this.validateUsername();
+			}
+		});
+		// password validators
+		etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) LoginActivity.this.validatePassword();
+			}
+		});
+		etPassword.addTextChangedListener(new TextInputValidator() {
+			@Override
+			public void validate() {
+				LoginActivity.this.validatePassword();
+			}
+		});
+	}
+
+	private void updateLoginBtn() {
+		boolean inputError = false;
+		if (etUsername.getError() != null) inputError = true;
+		if (etPassword.getError() != null) inputError = true;
+		btnLogin.setEnabled(!inputError); // if no error then enable btn
 	}
 
 	private void sendLoginRequest() {

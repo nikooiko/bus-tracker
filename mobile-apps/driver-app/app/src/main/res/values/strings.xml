@@ -9,4 +9,5 @@
     <string name="registerHere">No Account yet? Create one</string>
     <string name="toastMessage">toast</string>
     <string name="logo">logo</string>
+    <string name="requiredError">Required!</string>
 </resources>
