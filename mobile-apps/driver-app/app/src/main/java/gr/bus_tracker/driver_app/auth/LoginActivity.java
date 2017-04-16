@@ -3,7 +3,6 @@ package gr.bus_tracker.driver_app.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.strongloop.android.loopback.AccessToken;
+
+import org.apache.http.client.HttpResponseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,21 +168,23 @@ public class LoginActivity extends AppCompatActivity {
 					Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
 					LoginActivity.this.startActivity(intent);
 				} else {
-					AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-					builder.setMessage("Login Failed. You are not a driver!")
-							.setNegativeButton("Retry", null)
-							.create()
-							.show();
+					String toastMsg = "Login Failed. You are not a driver!";
+					Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
 				}
 			}
 
 			@Override
 			public void onError(Throwable t) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-				builder.setMessage("Login Failed, Throwable t: " + t)
-						.setNegativeButton("Retry", null)
-						.create()
-						.show();
+				if (t instanceof HttpResponseException) {
+					HttpResponseException httpEx = (HttpResponseException)t;
+					if (httpEx.getStatusCode() == 403) {
+						String toastMsg = "Login Failed. You are not a driver!";
+						Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+						return;
+					}
+				}
+				String toastMsg = "Login Failed!";
+				Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
 			}
 		};
 	}
