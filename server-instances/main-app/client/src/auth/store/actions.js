@@ -18,7 +18,9 @@ export const unauthUser = () => {
 // Async Action Creators
 export const login = (credentials) => {
   return (dispatch) => {
-    return api.post('/AppUsers/login' , credentials)
+    // Use functionality for explicit role login (as admin)
+    credentials.loginAsRole = 'admin';
+    return api.post('/AppUsers/login', credentials)
       .then(response => {
         const rememberMe = credentials.rememberMe;
         const accessToken = response.data.id;
@@ -39,7 +41,9 @@ export const login = (credentials) => {
         dispatch(routerActions.push(routeAfterAuth));
       })
       .catch((err) => {
-        if (err === 'notAdminError') {
+        let customError = null;
+        if (err && err.response && err.response.data) customError = err.response.data.error;
+        if (err === 'notAdminError' || (customError && customError.message === 'notAdminError')) {
           dispatch(showToast({
             message: 'You are not administrator. Access denied!',
             status: 'critical'

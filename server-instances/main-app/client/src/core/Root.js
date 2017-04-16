@@ -7,23 +7,24 @@ import configureStore from './configureStore';
 import { addInterceptor } from '../utils/api';
 import { unauthUser } from '../auth/store/actions';
 
-// Add auth Interceptor
-addInterceptor('response', (response) => response, (error) => {
-  // Check if we got 401 in order to logout
-  if (error && error.response && error.response.status === 401) {
-    console.error('Got a 401. Logging out.');
-    store.dispatch(unauthUser());
-  }
-  // just forward the error
-  return Promise.reject(error);
-});
-
 const onUpdate = () => {
   window.scrollTo(0, 0);
 };
 
 export const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
+
+// Add auth Interceptor
+addInterceptor('response', (response) => response, (error) => {
+  // Check if we got 401 in order to logout
+  if (store.getState().auth.authenticated
+    && error && error.response && error.response.status === 401) {
+    console.error('Got a 401. Logging out.');
+    store.dispatch(unauthUser());
+  }
+  // just forward the error
+  return Promise.reject(error);
+});
 
 // Render Provider >> Router
 const Root = () => (

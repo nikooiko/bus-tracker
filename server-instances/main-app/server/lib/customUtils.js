@@ -1,5 +1,9 @@
 'use strict';
 
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function getLoggedInUser(Model) {
   return (ctx, user, next) => {
     // Check for normal user access
@@ -40,6 +44,7 @@ function getModelCollection(model) {
 }
 
 module.exports = {
+  capitalize,
   getLoggedInUser,
   httpError,
   getModelCollection

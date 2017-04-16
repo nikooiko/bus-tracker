@@ -1,6 +1,6 @@
 'use strict';
 
-const { getModelCollection, httpError } = require('../../server/lib/customUtils');
+const { getModelCollection, httpError, capitalize } = require('../../server/lib/customUtils');
 
 module.exports = (AppUser) => {
   AppUser.dbCollection = null; // Placeholder for getting direct access to the db collection
@@ -45,7 +45,7 @@ module.exports = (AppUser) => {
                 }
               }
               if (!applies) {
-                return next(httpError('Unauthorized', 401));
+                return next(httpError(`not${capitalize(requestedRole)}Error`, 401));
               }
               ctx.result.roles = roles; // also append roles to result for later use if needed.
               return next();
