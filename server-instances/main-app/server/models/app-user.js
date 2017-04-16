@@ -45,7 +45,9 @@ module.exports = (AppUser) => {
                 }
               }
               if (!applies) {
-                return next(httpError(`not${capitalize(requestedRole)}Error`, 401));
+                const errMsg = `Failed to login, you are not an ${requestedRole}.`;
+                const errCode = `not${capitalize(requestedRole)}Error`;
+                return next(httpError(errMsg, 401, errCode));
               }
               ctx.result.roles = roles; // also append roles to result for later use if needed.
               return next();

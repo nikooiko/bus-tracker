@@ -24,7 +24,7 @@ function getLoggedInUser(Model) {
 function httpError(message, status = 500, code = null) {
   const err = new Error(message);
   if (code) {
-    err.code = code;
+    err.code = err.name = code;
   }
   err.status = err.statusCode = status;
   return err;

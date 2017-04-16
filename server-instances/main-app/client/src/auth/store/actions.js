@@ -43,7 +43,7 @@ export const login = (credentials) => {
       .catch((err) => {
         let customError = null;
         if (err && err.response && err.response.data) customError = err.response.data.error;
-        if (err === 'notAdminError' || (customError && customError.message === 'notAdminError')) {
+        if (err === 'notAdminError' || (customError && customError.code === 'notAdminError')) {
           dispatch(showToast({
             message: 'You are not administrator. Access denied!',
             status: 'critical'
