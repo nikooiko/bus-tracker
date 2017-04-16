@@ -1,5 +1,6 @@
 package gr.bus_tracker.driver_app.auth;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -7,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
@@ -45,6 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
 	@BindView(R.id.etRepeatPassword) EditText etRepeatPassword;
 	@BindView(R.id.btnRegister) Button btnRegister;
 
+	// Other properties
+	private ProgressDialog progressDialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,6 +65,11 @@ public class RegisterActivity extends AppCompatActivity {
 		etUsernameLayout.setErrorEnabled(true);
 		etPasswordLayout.setErrorEnabled(true);
 		etRepeatPasswordLayout.setErrorEnabled(true);
+
+		progressDialog = new ProgressDialog(RegisterActivity.this, R.style.Theme_Design_Light_BottomSheetDialog);
+		progressDialog.setIndeterminate(true);
+		progressDialog.setMessage("Creating account...");
+		progressDialog.setCancelable(false);
 	}
 
 	@OnFocusChange(R.id.etEmail)
@@ -119,7 +129,18 @@ public class RegisterActivity extends AppCompatActivity {
 		final String password = etPassword.getText().toString();
 
 		// Send the request
-		appUserRepo.registerUser(email, username, password, registerCallback());
+		beforeRegister();
+		appUserRepo.registerUser(email, username, password, new ObjectCallback<AppUser>() {
+			@Override
+			public void onSuccess(AppUser user) {
+				RegisterActivity.this.onRegisterSuccess(user);
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				RegisterActivity.this.onRegisterFailed();
+			}
+		});
 	}
 
 	private void validateEmail() {
@@ -197,25 +218,28 @@ public class RegisterActivity extends AppCompatActivity {
 		btnRegister.setEnabled(!inputError); // if no error then enable btn
 	}
 
-	private ObjectCallback<AppUser> registerCallback() {
-		return new ObjectCallback<AppUser>() {
-			@Override
-			public void onSuccess(AppUser user) {
-				Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-				intent.putExtra("username", user.getUsername());
-				intent.putExtra("password", user.getPassword());
-				intent.putExtra(TOAST_MESSAGE, "Registered successfully!");
-				RegisterActivity.this.startActivity(intent);
-			}
+	private void beforeRegister() {
+		btnRegister.setEnabled(false);
+		progressDialog.show();
+	}
 
-			@Override
-			public void onError(Throwable t) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-				builder.setMessage("Register Failed, Throwable t: " + t)
-						.setNegativeButton("Retry", null)
-						.create()
-						.show();
-			}
-		};
+	private void afterRegister() {
+		btnRegister.setEnabled(true);
+		progressDialog.dismiss();
+	}
+
+	private void onRegisterSuccess(AppUser user) {
+		Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+		intent.putExtra("username", user.getUsername());
+		intent.putExtra("password", user.getPassword());
+		intent.putExtra(TOAST_MESSAGE, "Registered successfully!");
+		RegisterActivity.this.startActivity(intent);
+		afterRegister();
+	}
+
+	private void onRegisterFailed() {
+		String toastMsg = "Account creation failed!";
+		Toast.makeText(RegisterActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+		afterRegister();
 	}
 }

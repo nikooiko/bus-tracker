@@ -64,7 +64,7 @@ public class AppUserRepository extends UserRepository<AppUser> {
 		if (params == null) {
 			params = new HashMap<>();
 		}
-		params.put("loginAsRole",  DRIVER_ROLE); // append
+		params.put("loginAsRole",  DRIVER_ROLE); // request login with specific role.
 		invokeStaticMethod("login", params, new Adapter.JsonObjectCallback() {
 			@Override
 			public void onError(Throwable t) {

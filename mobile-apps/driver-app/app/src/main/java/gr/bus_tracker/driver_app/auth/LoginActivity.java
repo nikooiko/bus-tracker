@@ -1,5 +1,6 @@
 package gr.bus_tracker.driver_app.auth;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.strongloop.android.loopback.AccessToken;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import org.apache.http.client.HttpResponseException;
 
@@ -46,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
 	@BindView(R.id.btnLogin) Button btnLogin;
 	@BindView(R.id.tvRegister) TextView tvRegister;
 
+	// Other properties
+	private ProgressDialog progressDialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,6 +75,12 @@ public class LoginActivity extends AppCompatActivity {
 		// check if intent contains toast message
 		String toastMsg = intent.getStringExtra(TOAST_MESSAGE);
 		Toast.makeText(this, toastMsg, Toast.LENGTH_SHORT).show();
+
+		// init progress dialog
+		progressDialog = new ProgressDialog(LoginActivity.this, R.style.Theme_Design_Light_BottomSheetDialog);
+		progressDialog.setIndeterminate(true);
+		progressDialog.setMessage("Authenticating...");
+		progressDialog.setCancelable(false);
 	}
 
 	@Override
@@ -120,7 +131,19 @@ public class LoginActivity extends AppCompatActivity {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("username",  username);
 		params.put("password",  password);
-		appUserRepo.loginUser(params, loginCallback());
+
+		beforeLogin();
+		appUserRepo.loginUser(params, new AppUserRepository.LoginCallback<AppUser>() {
+			@Override
+			public void onSuccess(AccessToken token, AppUser currentUser) {
+				LoginActivity.this.onLoginSuccess(token, currentUser);
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				LoginActivity.this.onLoginFailed(t);
+			}
+		});
 	}
 
 	private void validateUsername() {
@@ -158,34 +181,58 @@ public class LoginActivity extends AppCompatActivity {
 		btnLogin.setEnabled(!inputError); // if no error then enable btn
 	}
 
-	private AppUserRepository.LoginCallback<AppUser> loginCallback() {
-		return new AppUserRepository.LoginCallback<AppUser>() {
-			@Override
-			public void onSuccess(AccessToken token, AppUser currentUser) {
-				ArrayList<String> roles = (ArrayList<String>) token.getCreationParameters().get("roles");
-				currentUser.setRoles(roles);
-				if (currentUser.hasRole(DRIVER_ROLE)) {
-					Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
-					LoginActivity.this.startActivity(intent);
-				} else {
-					String toastMsg = "Login Failed. You are not a driver!";
-					Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
-				}
-			}
+	private void beforeLogin() {
+		btnLogin.setEnabled(false);
+		progressDialog.show();
+	}
 
-			@Override
-			public void onError(Throwable t) {
-				if (t instanceof HttpResponseException) {
-					HttpResponseException httpEx = (HttpResponseException)t;
-					if (httpEx.getStatusCode() == 403) {
-						String toastMsg = "Login Failed. You are not a driver!";
-						Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
-						return;
-					}
+	private void afterLogin() {
+		btnLogin.setEnabled(true);
+		progressDialog.dismiss();
+	}
+
+	private void failNotDriverLogout() {
+		String toastMsg = "Login Failed. You are not a driver!";
+		Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+		afterLogin();
+	}
+
+	private void onLoginSuccess(AccessToken token, AppUser currentUser) {
+		ArrayList<String> roles = (ArrayList<String>) token.getCreationParameters().get("roles");
+		currentUser.setRoles(roles);
+		if (currentUser.hasRole(DRIVER_ROLE)) {
+			Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
+			LoginActivity.this.startActivity(intent);
+			afterLogin();
+		} else { // just a failsafe
+			appUserRepo.logout(new VoidCallback() {
+				@Override
+				public void onSuccess() {
+					failNotDriverLogout();
 				}
-				String toastMsg = "Login Failed!";
+
+				@Override
+				public void onError(Throwable t) {
+					failNotDriverLogout();
+				}
+			});
+		}
+	}
+
+	private void onLoginFailed(Throwable t) {
+		boolean handled = false;
+		if (t instanceof HttpResponseException) {
+			HttpResponseException httpEx = (HttpResponseException)t;
+			if (httpEx.getStatusCode() == 403) {
+				String toastMsg = "Login Failed. You are not a driver!";
 				Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+				handled = true;
 			}
-		};
+		}
+		if (!handled) {
+			String toastMsg = "Login Failed!";
+			Toast.makeText(LoginActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+		}
+		afterLogin();
 	}
 }
