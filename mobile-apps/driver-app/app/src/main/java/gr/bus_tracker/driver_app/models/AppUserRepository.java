@@ -33,7 +33,7 @@ public class AppUserRepository extends UserRepository<AppUser> {
 	private boolean isCurrentUserIdLoaded;
 
 	public AppUserRepository() {
-		super("AppUser", AppUser.class);
+		super(AppUser.NAME, AppUser.class);
 	}
 
 	public void registerUser(final String email, final String username, final String password, final ObjectCallback<AppUser> appUserObjectCallback) {

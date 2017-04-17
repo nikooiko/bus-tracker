@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 
 public class AppUser extends User {
+	public static String NAME = "AppUser";
+
 	private LatLng location;
 	private ArrayList<String> roles;
 	private String username;
@@ -33,7 +35,7 @@ public class AppUser extends User {
 	}
 
 	public boolean hasRole(String sRole) {
-		for (String role: roles) {
+		for (String role : roles) {
 			if (role.equals(sRole)) return true;
 		}
 		return false;
@@ -50,6 +52,7 @@ public class AppUser extends User {
 	public String getEmail() {
 		return super.getEmail();
 	}
+
 	public String getPassword() {
 		return super.getPassword();
 	}

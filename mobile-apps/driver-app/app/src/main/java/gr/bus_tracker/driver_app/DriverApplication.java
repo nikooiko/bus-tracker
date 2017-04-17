@@ -8,6 +8,7 @@ import com.strongloop.android.loopback.AccessTokenRepository;
 import com.strongloop.android.loopback.RestAdapter;
 
 import gr.bus_tracker.driver_app.models.AppUserRepository;
+import gr.bus_tracker.driver_app.models.RouteRepository;
 
 /**
  * Created by nick on 4/2/17.
@@ -18,6 +19,7 @@ public class DriverApplication extends Application {
 	protected RestAdapter adapter;
 	protected AppUserRepository appUserRepository;
 	protected AccessTokenRepository accessTokenRepository;
+	protected RouteRepository routeRepository;
 
 	@Override
 	public void onCreate() {
@@ -27,6 +29,7 @@ public class DriverApplication extends Application {
 		adapter = new RestAdapter(getApplicationContext(), API_URL);
 		appUserRepository = adapter.createRepository(AppUserRepository.class);
 		accessTokenRepository = adapter.createRepository(AccessTokenRepository.class);
+		routeRepository = adapter.createRepository(RouteRepository.class);
 
 		mContext = this;
 	}
@@ -41,6 +44,10 @@ public class DriverApplication extends Application {
 
 	public AccessTokenRepository getAccessTokenRepository() {
 		return accessTokenRepository;
+	}
+
+	public RouteRepository getRouteRepository() {
+		return routeRepository;
 	}
 
 	public Context getContext() {
