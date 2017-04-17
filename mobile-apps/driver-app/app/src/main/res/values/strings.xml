@@ -5,6 +5,7 @@
     <string name="password">Password</string>
     <string name="repeatPassword">Repeat Password</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="register">Register</string>
     <string name="registerHere">No Account yet? Create one</string>
     <string name="toastMessage">toast</string>
@@ -14,4 +15,16 @@
     <string name="usernameError">Invalid Username! TODO pattern!</string>
     <string name="repeatPasswordError">Password doesn\'t match!</string>
     <string name="passwordError">Invalid Password! TODO pattern!</string>
+
+    <!--TODO delete below-->
+    <string-array name="routes">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>
