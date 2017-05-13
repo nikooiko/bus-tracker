@@ -1,7 +1,7 @@
 version: "2"
 services:
   main-app:
-    image: bus-tracker-image
+    image: main-app
     environment:
       NODE_ENV: 'production'
       MONGOURL: 'mongodb://mongo/bus-tracker'
