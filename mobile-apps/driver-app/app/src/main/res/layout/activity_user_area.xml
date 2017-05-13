@@ -28,6 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnLogout"/>
 
     <Spinner
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:id="@+id/sRoutes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
