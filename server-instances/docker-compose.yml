@@ -1,10 +1,10 @@
 version: "2"
 services:
-  iot-hub:
-    image: iot-hub-image
+  main-app:
+    image: bus-tracker-image
     environment:
       NODE_ENV: 'production'
-      MONGOURL: 'mongodb://mongo/iot-hub'
+      MONGOURL: 'mongodb://mongo/bus-tracker'
     ports:
       - "80:3000"
     depends_on:
