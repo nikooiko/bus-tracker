@@ -1,8 +1,5 @@
 FROM node
 
-# Install webpack for front end build
-RUN npm install webpack -g
-
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
