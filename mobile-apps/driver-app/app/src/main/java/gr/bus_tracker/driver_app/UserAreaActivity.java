@@ -10,17 +10,24 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.strongloop.android.loopback.callbacks.ListCallback;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
+import gr.bus_tracker.driver_app.models.Route;
+import gr.bus_tracker.driver_app.models.RouteRepository;
 
 public class UserAreaActivity extends AppCompatActivity {
 	private final String TAG = "UserAreaActivity";
 
 	// Repositories/Models
 	private AppUserRepository appUserRepo;
+	private RouteRepository routeRepository;
 
 	// Resources
 
@@ -41,6 +48,7 @@ public class UserAreaActivity extends AppCompatActivity {
 		// get needed models
 		final DriverApplication app = (DriverApplication)getApplication();
 		appUserRepo = app.getAppUserRepository();
+		routeRepository = app.getRouteRepository();
 
 		currentUser = appUserRepo.getCachedCurrentUser();
 		String username = currentUser.getUsername();
@@ -48,18 +56,31 @@ public class UserAreaActivity extends AppCompatActivity {
 		tvWelcome.setText(message);
 
 		// Init Routes Spinner
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.routes, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		sRoutes.setAdapter(adapter);
-		sRoutes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		routeRepository.findAll(new ListCallback<Route>() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				parent.getItemAtPosition(position);
+			public void onSuccess(List<Route> routes) {
+				ArrayAdapter<Route> dataAdapter
+						= new ArrayAdapter<>(UserAreaActivity.this, android.R.layout.simple_spinner_item, routes);
+				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+				sRoutes.setAdapter(dataAdapter);
+				sRoutes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+						parent.getItemAtPosition(position);
+						// TODO with selection
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parent) {
+
+					}
+				});
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
+			public void onError(Throwable t) {
+				// TODO
 			}
 		});
 	}

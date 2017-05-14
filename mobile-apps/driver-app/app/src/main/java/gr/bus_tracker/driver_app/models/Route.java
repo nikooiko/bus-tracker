@@ -55,4 +55,9 @@ public class Route extends Model {
 	public void setDestination(LatLng destination) {
 		this.destination = destination;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

@@ -15,16 +15,4 @@
     <string name="usernameError">Invalid Username! TODO pattern!</string>
     <string name="repeatPasswordError">Password doesn\'t match!</string>
     <string name="passwordError">Invalid Password! TODO pattern!</string>
-
-    <!--TODO delete below-->
-    <string-array name="routes">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
 </resources>
