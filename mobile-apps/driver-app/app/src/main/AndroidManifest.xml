@@ -25,6 +25,12 @@
         </activity>
         <activity android:name=".UserAreaActivity">
         </activity>
+
+        <provider
+            android:name="gr.bus_tracker.driver_app.StubProvider"
+            android:authorities="com.example.android.datasync.provider"
+            android:exported="false"
+            android:syncable="true"/>
     </application>
 
     <service
