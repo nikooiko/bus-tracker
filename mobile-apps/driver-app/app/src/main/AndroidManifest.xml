@@ -27,4 +27,14 @@
         </activity>
     </application>
 
+    <service
+        android:name="gr.bus_tracker.driver_app.auth.AuthenticatorService">
+        <intent-filter>
+            <action android:name="android.accounts.AccountAuthenticator"/>
+        </intent-filter>
+        <meta-data
+            android:name="android.accounts.AccountAuthenticator"
+            android:resource="@xml/authenticator" />
+    </service>
+
 </manifest>
