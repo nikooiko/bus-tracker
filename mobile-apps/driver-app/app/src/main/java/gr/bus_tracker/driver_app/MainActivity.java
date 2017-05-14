@@ -2,6 +2,7 @@ package gr.bus_tracker.driver_app;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,16 @@ public class MainActivity extends AppCompatActivity {
 	public static final String AUTHORITY = "gr.bus_tracker.driver_app.provider";
 	// An account type, in the form of a domain name
 	public static final String ACCOUNT_TYPE = "example.com";
-	// The account name
-	public static final String ACCOUNT = "dummyaccount";
+	// Account
+	public static final String ACCOUNT = "default_account";
+	// Sync interval constants
+	public static final long SECONDS_PER_MINUTE = 60L;
+	public static final long SYNC_INTERVAL_IN_MINUTES = 60L;
+	public static final long SYNC_INTERVAL = SYNC_INTERVAL_IN_MINUTES * SECONDS_PER_MINUTE;
+	// Global variables
+	// A content resolver for accessing the provider
+	ContentResolver mResolver;
+
 	// Instance fields
 	Account mAccount;
 
@@ -28,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
 		// Create the dummy account
 		mAccount = CreateSyncAccount(this);
+
+		// Get the content resolver for your app
+		mResolver = getContentResolver();
+
+		/*
+	   * Turn on periodic syncing
+	   */
+		ContentResolver.addPeriodicSync(mAccount, AUTHORITY, Bundle.EMPTY, SYNC_INTERVAL);
 
 		// TODO later on check if already logged in.
 		Intent intent = new Intent(this, LoginActivity.class);
