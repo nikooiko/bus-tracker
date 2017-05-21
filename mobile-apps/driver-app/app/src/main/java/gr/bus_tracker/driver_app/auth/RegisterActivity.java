@@ -20,11 +20,12 @@ import butterknife.OnFocusChange;
 import butterknife.OnTextChanged;
 import gr.bus_tracker.driver_app.DriverApplication;
 import gr.bus_tracker.driver_app.R;
+import gr.bus_tracker.driver_app.core.BaseActivity;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.utils.TextInputUtils;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 	// Repositories/Models
 	private AppUserRepository appUserRepo;
 
@@ -50,10 +51,13 @@ public class RegisterActivity extends AppCompatActivity {
 	// Other properties
 	private ProgressDialog progressDialog;
 
+	public RegisterActivity() {
+		super(R.layout.activity_register);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register);
 		ButterKnife.bind(this);
 
 		// get needed models

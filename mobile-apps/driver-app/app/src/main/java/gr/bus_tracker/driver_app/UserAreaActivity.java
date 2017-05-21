@@ -17,12 +17,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import gr.bus_tracker.driver_app.core.BaseActivity;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.models.Route;
 import gr.bus_tracker.driver_app.models.RouteRepository;
 
-public class UserAreaActivity extends AppCompatActivity {
+public class UserAreaActivity extends BaseActivity {
 	private final String TAG = "UserAreaActivity";
 
 	// Repositories/Models
@@ -39,10 +40,13 @@ public class UserAreaActivity extends AppCompatActivity {
 	// Properties
 	private AppUser currentUser;
 
+	public UserAreaActivity() {
+		super(R.layout.activity_user_area);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user_area);
 		ButterKnife.bind(this);
 
 		// get needed models
