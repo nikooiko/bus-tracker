@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -36,6 +37,7 @@ public class RegisterActivity extends BaseActivity {
 	@BindString(R.string.usernameError) String USERNAME_ERROR;
 	@BindString(R.string.passwordError) String PASSWORD_ERROR;
 	@BindString(R.string.repeatPasswordError) String REPEAT_PASSWORD_ERROR;
+	@BindString(R.string.registerTitle) String TITLE;
 
 	// Fields
 	@BindView(R.id.etEmailLayout) TextInputLayout etEmailLayout;
@@ -60,10 +62,6 @@ public class RegisterActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		ButterKnife.bind(this);
 
-		// get needed models
-		final DriverApplication app = (DriverApplication)getApplication();
-		appUserRepo = app.getAppUserRepository();
-
 		// enable error handlers to avoid layout changes.
 		etEmailLayout.setErrorEnabled(true);
 		etUsernameLayout.setErrorEnabled(true);
@@ -74,6 +72,11 @@ public class RegisterActivity extends BaseActivity {
 		progressDialog.setIndeterminate(true);
 		progressDialog.setMessage("Creating account...");
 		progressDialog.setCancelable(false);
+
+		// Update action bar
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(TITLE);
 	}
 
 	@OnFocusChange(R.id.etEmail)

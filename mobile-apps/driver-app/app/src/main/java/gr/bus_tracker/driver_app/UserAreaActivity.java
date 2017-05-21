@@ -1,6 +1,7 @@
 package gr.bus_tracker.driver_app;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,10 +29,10 @@ public class UserAreaActivity extends BaseActivity {
 	private final String TAG = "UserAreaActivity";
 
 	// Repositories/Models
-	private AppUserRepository appUserRepo;
 	private RouteRepository routeRepository;
 
 	// Resources
+	@BindString(R.string.userAreaTitle) String TITLE;
 
 	// Fields
 	@BindView(R.id.tvWelcome) TextView tvWelcome;
@@ -38,12 +40,13 @@ public class UserAreaActivity extends BaseActivity {
 	@BindView(R.id.btnLogout) Button btnLogout;
 
 	// Properties
-	private AppUser currentUser;
 
+	// Constructors
 	public UserAreaActivity() {
 		super(R.layout.activity_user_area);
 	}
 
+	// Methods
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,10 +54,9 @@ public class UserAreaActivity extends BaseActivity {
 
 		// get needed models
 		final DriverApplication app = (DriverApplication)getApplication();
-		appUserRepo = app.getAppUserRepository();
 		routeRepository = app.getRouteRepository();
 
-		currentUser = appUserRepo.getCachedCurrentUser();
+		AppUser currentUser = appUserRepo.getCachedCurrentUser();
 		String username = currentUser.getUsername();
 		String message = "Hello " + username + "!";
 		tvWelcome.setText(message);
@@ -87,6 +89,16 @@ public class UserAreaActivity extends BaseActivity {
 				// TODO
 			}
 		});
+
+		// Update action bar
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setTitle(TITLE);
+	}
+
+	@Override
+	public void onBackPressed() {
+		// disable going back to the MainActivity
+		moveTaskToBack(true);
 	}
 
 	@OnClick(R.id.btnLogout)

@@ -23,4 +23,7 @@
     <string name="exit">exit</string>
     <string name="action_search">search</string>
     <string name="action_notifications">notifications</string>
+    <string name="loginTittle">Login</string>
+    <string name="registerTitle">Register</string>
+    <string name="userAreaTitle">Home</string>
 </resources>

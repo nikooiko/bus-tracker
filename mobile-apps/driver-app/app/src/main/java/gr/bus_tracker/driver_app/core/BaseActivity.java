@@ -7,20 +7,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import gr.bus_tracker.driver_app.DriverApplication;
 import gr.bus_tracker.driver_app.R;
+import gr.bus_tracker.driver_app.models.AppUser;
+import gr.bus_tracker.driver_app.models.AppUserRepository;
 
 /**
  * Created by nick on 5/20/17.
  */
 
 public class BaseActivity extends AppCompatActivity {
+	// Repositories/Models
+	protected AppUserRepository appUserRepo;
+
+	// Properties
 	protected int layout;
 
+	// Constructors
 	public BaseActivity(int layout) {
 		super();
 		this.layout = layout;
 	}
 
+	// Methods
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,12 +37,21 @@ public class BaseActivity extends AppCompatActivity {
 
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.custom_action_bar);
 		setSupportActionBar(myToolbar);
+
+		// get needed models
+		final DriverApplication app = (DriverApplication)getApplication();
+		this.appUserRepo = app.getAppUserRepository();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_menu, menu);
+		AppUser currentUser = appUserRepo.getCachedCurrentUser();
+
+		if (currentUser != null) { // means logged in
+			getMenuInflater().inflate(R.menu.auth, menu);
+		} else { // no logged in user
+			getMenuInflater().inflate(R.menu.unauth, menu);
+		}
 		return true;
 	}
 

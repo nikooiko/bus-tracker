@@ -7,19 +7,20 @@
     android:fitsSystemWindows="true"
     tools:context="gr.bus_tracker.driver_app.auth.RegisterActivity">
 
-    <include layout="@layout/main_toolbar" />
+    <include layout="@layout/main_toolbar"
+             android:id="@+id/include2"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/include2"
         android:layout_alignParentStart="true">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
+            android:paddingTop="0dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:descendantFocusability="beforeDescendants"

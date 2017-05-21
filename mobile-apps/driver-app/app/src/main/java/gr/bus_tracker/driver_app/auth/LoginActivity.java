@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,9 +33,6 @@ import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.utils.TextInputUtils;
 
 public class LoginActivity extends BaseActivity {
-	// Repositories/Models
-	private AppUserRepository appUserRepo;
-
 	// Resources
 	@BindString(R.string.driverRole) String DRIVER_ROLE;
 	@BindString(R.string.toastMessage) String TOAST_MESSAGE;
@@ -60,10 +58,6 @@ public class LoginActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		ButterKnife.bind(this);
 
-		// get needed models
-		final DriverApplication app = (DriverApplication)getApplication();
-		appUserRepo = app.getAppUserRepository();
-
 		// enable error handlers to avoid layout changes.
 		etUsernameLayout.setErrorEnabled(true);
 		etPasswordLayout.setErrorEnabled(true);
@@ -84,6 +78,10 @@ public class LoginActivity extends BaseActivity {
 		progressDialog.setIndeterminate(true);
 		progressDialog.setMessage("Authenticating...");
 		progressDialog.setCancelable(false);
+
+		// Update action bar
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.hide();
 	}
 
 	@Override
