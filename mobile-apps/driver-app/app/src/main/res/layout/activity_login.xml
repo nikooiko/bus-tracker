@@ -1,71 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
     tools:context="gr.bus_tracker.driver_app.auth.LoginActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <include layout="@layout/main_toolbar"
+             android:id="@+id/include3"/>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="40dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true">
+        android:layout_below="@+id/include3"
+        android:layout_alignParentStart="true">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="220dp"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/logo"
-            android:src="@drawable/bus_tracker_logo_bottom_horizontal"/>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/etUsernameLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/etUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/username"
-                android:inputType="textPersonName"
-                />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/etPasswordLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                />
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/login"/>
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="40dp">
 
-        <TextView
-            android:id="@+id/tvRegister"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/registerHere"
-            android:gravity="center"
-            android:textSize="16sp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/logo"
+                android:src="@drawable/bus_tracker_logo_bottom_horizontal"/>
 
-    </LinearLayout>
-</ScrollView>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/etUsernameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username"
+                    android:inputType="textPersonName"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/etPasswordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/login"/>
+
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/registerHere"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

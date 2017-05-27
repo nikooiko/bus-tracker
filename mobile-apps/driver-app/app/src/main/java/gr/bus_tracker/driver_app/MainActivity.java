@@ -5,12 +5,13 @@ import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import gr.bus_tracker.driver_app.auth.LoginActivity;
+import gr.bus_tracker.driver_app.core.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 	// Constants
 	// The authority for the sync adapter's content provider
@@ -30,21 +31,25 @@ public class MainActivity extends AppCompatActivity {
 	// Instance fields
 	Account mAccount;
 
+	public MainActivity() {
+		super(R.layout.activity_main);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 
-		// Create the dummy account
-		mAccount = CreateSyncAccount(this);
+		// Create the dummy account  // TODO this
+
+//		mAccount = CreateSyncAccount(this);
 
 		// Get the content resolver for your app
-		mResolver = getContentResolver();
+//		mResolver = getContentResolver();
 
 		/*
 	   * Turn on periodic syncing
 	   */
-		ContentResolver.addPeriodicSync(mAccount, AUTHORITY, Bundle.EMPTY, SYNC_INTERVAL);
+//		ContentResolver.addPeriodicSync(mAccount, AUTHORITY, Bundle.EMPTY, SYNC_INTERVAL);
 
 		// TODO later on check if already logged in.
 		Intent intent = new Intent(this, LoginActivity.class);

@@ -15,4 +15,15 @@
     <string name="usernameError">Invalid Username! TODO pattern!</string>
     <string name="repeatPasswordError">Password doesn\'t match!</string>
     <string name="passwordError">Invalid Password! TODO pattern!</string>
+
+    <!-- TODO check if needed the below str -->
+    <string name="add">add</string>
+    <string name="reset">reset</string>
+    <string name="about">about</string>
+    <string name="exit">exit</string>
+    <string name="action_search">search</string>
+    <string name="action_notifications">notifications</string>
+    <string name="loginTittle">Login</string>
+    <string name="registerTitle">Register</string>
+    <string name="userAreaTitle">Home</string>
 </resources>

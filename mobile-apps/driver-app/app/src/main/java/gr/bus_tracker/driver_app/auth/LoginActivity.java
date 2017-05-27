@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,14 +27,12 @@ import butterknife.OnTextChanged;
 import gr.bus_tracker.driver_app.DriverApplication;
 import gr.bus_tracker.driver_app.R;
 import gr.bus_tracker.driver_app.UserAreaActivity;
+import gr.bus_tracker.driver_app.core.BaseActivity;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.utils.TextInputUtils;
 
-public class LoginActivity extends AppCompatActivity {
-	// Repositories/Models
-	private AppUserRepository appUserRepo;
-
+public class LoginActivity extends BaseActivity {
 	// Resources
 	@BindString(R.string.driverRole) String DRIVER_ROLE;
 	@BindString(R.string.toastMessage) String TOAST_MESSAGE;
@@ -51,15 +49,14 @@ public class LoginActivity extends AppCompatActivity {
 	// Other properties
 	private ProgressDialog progressDialog;
 
+	public LoginActivity() {
+		super(R.layout.activity_login);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
 		ButterKnife.bind(this);
-
-		// get needed models
-		final DriverApplication app = (DriverApplication)getApplication();
-		appUserRepo = app.getAppUserRepository();
 
 		// enable error handlers to avoid layout changes.
 		etUsernameLayout.setErrorEnabled(true);
@@ -81,6 +78,10 @@ public class LoginActivity extends AppCompatActivity {
 		progressDialog.setIndeterminate(true);
 		progressDialog.setMessage("Authenticating...");
 		progressDialog.setCancelable(false);
+
+		// Update action bar
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.hide();
 	}
 
 	@Override

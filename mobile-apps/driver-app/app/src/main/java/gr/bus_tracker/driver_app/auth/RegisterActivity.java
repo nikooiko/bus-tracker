@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -20,11 +21,12 @@ import butterknife.OnFocusChange;
 import butterknife.OnTextChanged;
 import gr.bus_tracker.driver_app.DriverApplication;
 import gr.bus_tracker.driver_app.R;
+import gr.bus_tracker.driver_app.core.BaseActivity;
 import gr.bus_tracker.driver_app.models.AppUser;
 import gr.bus_tracker.driver_app.models.AppUserRepository;
 import gr.bus_tracker.driver_app.utils.TextInputUtils;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 	// Repositories/Models
 	private AppUserRepository appUserRepo;
 
@@ -35,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 	@BindString(R.string.usernameError) String USERNAME_ERROR;
 	@BindString(R.string.passwordError) String PASSWORD_ERROR;
 	@BindString(R.string.repeatPasswordError) String REPEAT_PASSWORD_ERROR;
+	@BindString(R.string.registerTitle) String TITLE;
 
 	// Fields
 	@BindView(R.id.etEmailLayout) TextInputLayout etEmailLayout;
@@ -50,15 +53,14 @@ public class RegisterActivity extends AppCompatActivity {
 	// Other properties
 	private ProgressDialog progressDialog;
 
+	public RegisterActivity() {
+		super(R.layout.activity_register);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register);
 		ButterKnife.bind(this);
-
-		// get needed models
-		final DriverApplication app = (DriverApplication)getApplication();
-		appUserRepo = app.getAppUserRepository();
 
 		// enable error handlers to avoid layout changes.
 		etEmailLayout.setErrorEnabled(true);
@@ -70,6 +72,11 @@ public class RegisterActivity extends AppCompatActivity {
 		progressDialog.setIndeterminate(true);
 		progressDialog.setMessage("Creating account...");
 		progressDialog.setCancelable(false);
+
+		// Update action bar
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(TITLE);
 	}
 
 	@OnFocusChange(R.id.etEmail)
