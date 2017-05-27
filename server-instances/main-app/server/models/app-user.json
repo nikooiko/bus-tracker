@@ -44,6 +44,14 @@
     "storedRoutes": {
       "type": "hasMany",
       "model": "Route"
+    },
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "AccessToken",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
     }
   },
   "acls": [

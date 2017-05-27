@@ -19,7 +19,14 @@
   },
   "AccessToken": {
     "dataSource": "mongoDs",
-    "public": false
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "AppUser",
+        "foreignKey": "userId"
+      }
+    }
   },
   "ACL": {
     "dataSource": "memoryDs",
