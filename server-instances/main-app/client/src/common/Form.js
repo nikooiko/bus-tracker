@@ -3,10 +3,10 @@ import FormField from 'grommet/components/FormField';
 import Select from 'grommet/components/Select';
 
 class Form extends React.Component {
-  constructor(props, content, defaultFieldValues, formValidator) {
+  constructor(props, content, state, defaultFieldValues, formValidator) {
     super(props, content);
     this.state = {
-      ...this.state,
+      ...state,
       form: {
         fields: defaultFieldValues,
         errors: {}
@@ -67,7 +67,7 @@ class Form extends React.Component {
     }
   }
 
-  _onSelectFieldChange(fieldName) {
+  _onSelectFieldChange(fieldName, postAction) {
     return (event) => {
       const newState = {...this.state};
       const form = newState.form;
@@ -77,6 +77,7 @@ class Form extends React.Component {
         this.validateField(form, fieldName);
       }
       this.setState(newState);
+      if (postAction && typeof postAction === 'function') postAction();
     }
   }
 
@@ -93,16 +94,17 @@ class Form extends React.Component {
     );
   }
 
-  renderSelectField(label, name, options) {
-    const form =this.state.form;
+  renderSelectField(label, name, options, postAction) {
+    const { form } = this.state;
+    const selectedOpt = form.fields[name];
     return (
       <FormField label={label} htmlFor={name} error={form.errors[name]}>
         <Select
           id={name}
           options={options}
-          value={form.fields[name]}
-          onChange={this._onSelectFieldChange(name)}
-          onBlur={this._onSelectFieldChange(name)}
+          value={selectedOpt ? selectedOpt.label : null}
+          onChange={this._onSelectFieldChange(name, postAction)}
+          onBlur={this._onSelectFieldChange(name, postAction)}
         />
       </FormField>
     );

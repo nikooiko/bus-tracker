@@ -60,8 +60,8 @@ export const createOfficialRoute = (form) => {
     // TODO maybe add fetching status or smth
     // also append isOfficial to form
     form.isOfficial = true;
-    // add dummy source/destination for now // TODO add form functionality for source/destination
-    form.source = {};
+    // add dummy origin/destination for now // TODO add form functionality for origin/destination
+    form.origin = {};
     form.destination = {};
 
     return api.post('/Routes', form)

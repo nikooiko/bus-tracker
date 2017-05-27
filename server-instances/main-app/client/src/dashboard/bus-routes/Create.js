@@ -7,7 +7,9 @@ import Form from './Form';
 class Create extends Form {
   constructor(props, content) {
     const defaultFieldValues = {
-      name: ''
+      name: '',
+      origin: null,
+      destination: null
     };
 
     super(props, content, defaultFieldValues);
