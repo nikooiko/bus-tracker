@@ -4,6 +4,7 @@ import Split from 'grommet/components/Split';
 import Article from 'grommet/components/Article';
 import Sidebar from './navigation/sidebar/Sidebar';
 import { fetchOfficialRoutes } from './bus-routes/store/actions';
+import { fetchStops } from './stops/store/actions';
 import { fetchUsers } from './users/store/actions';
 import Loading from '../common/Loading';
 
@@ -18,6 +19,7 @@ class Dashboard extends React.Component {
 
   componentWillMount() {
     this.props.fetchOfficialRoutes()
+      .then(() => this.props.fetchStops())
       .then(() => this.props.fetchUsers())
       .then(() => {
         this.setState({
@@ -45,4 +47,4 @@ const mapStateToProps = (state) => ({
   sidebarOpened: state.sidebar.opened
 });
 
-export default connect(mapStateToProps, { fetchOfficialRoutes, fetchUsers })(Dashboard);
+export default connect(mapStateToProps, { fetchOfficialRoutes, fetchStops, fetchUsers })(Dashboard);

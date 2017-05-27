@@ -13,7 +13,7 @@
       "description": "The label of this stop (eg `Volos`)",
       "unique": true
     },
-    "location": {
+    "value": {
       "type": "object",
       "required": true,
       "description": "Should contain `Number` properties `long` and `lat`"

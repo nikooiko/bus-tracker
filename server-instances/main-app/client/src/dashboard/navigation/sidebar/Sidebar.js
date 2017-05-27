@@ -9,6 +9,7 @@ import CloseIcon from 'grommet/components/icons/base/Close'
 import Anchor from 'grommet/components/Anchor';
 import DashboardIcon from 'grommet/components/icons/base/Dashboard';
 import RoutesIcon from 'grommet/components/icons/base/Directions';
+import StopsIcon from 'grommet/components/icons/base/MapLocation';
 import UserSettingsIcon from 'grommet/components/icons/base/UserSettings';
 import { closeSidebar } from './store/actions';
 import bindFunctions from '../../../utils/bindFunctions';
@@ -49,6 +50,10 @@ class Sidebar extends React.Component {
           <Anchor
             path={'/routes'} label={'Routes'}
             icon={<RoutesIcon />}
+          />
+          <Anchor
+            path={'/stops'} label={'Stops'}
+            icon={<StopsIcon />}
           />
           <Anchor
             path={'/users'} label={'Users'}

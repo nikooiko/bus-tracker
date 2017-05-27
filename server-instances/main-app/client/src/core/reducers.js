@@ -6,6 +6,7 @@ import sidebar from '../dashboard/navigation/sidebar/store/reducers';
 import auth from '../auth/store/reducers';
 import { UNAUTH_USER } from '../auth/store/types';
 import busRoutes from '../dashboard/bus-routes/store/reducers';
+import stops from '../dashboard/stops/store/reducers';
 import users from '../dashboard/users/store/reducers';
 import toast from '../toast/store/reducers';
 
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   sidebar,
   auth,
   busRoutes,
+  stops,
   users,
   toast
 });
@@ -28,6 +30,7 @@ const appReducer = combineReducers({
 const rootReducer = (state, action) => {
   if (action.type === UNAUTH_USER) {
     state.busRoutes = undefined;
+    state.stops = undefined;
   }
   return appReducer(state, action);
 };

@@ -7,68 +7,41 @@ import FormUtil from '../../common/Form';
 import Navbar from './navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
 
-import  { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
+import  { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-const DirectionsGoogleMap = withGoogleMap(props => (
+const LocationGoogleMap = withGoogleMap(props => (
   <GoogleMap
     defaultZoom={7}
     defaultCenter={props.center}
   >
-    {props.directions && <DirectionsRenderer directions={props.directions}/>}
   </GoogleMap>
 ));
 
 const formValidator = {
-  name: {
+  label: {
     required: true
   },
-  origin: {
-    required: true
-  },
-  destination: {
+  value: {
     required: true
   }
 };
 
 class Form extends FormUtil {
   constructor(props, content, defaultFieldValues) {
-    const state = {
-      directions: null
-    };
+    const state = {};
     super(props, content, state, defaultFieldValues, formValidator);
 
-    this.directionsService = new google.maps.DirectionsService();
-    bindFunctions(this, ['_onNeedDirections']);
+    bindFunctions(this, ['_onNeedLocation']);
   }
 
-  _onNeedDirections() {
+  _onNeedLocation() {
     const { state, form } = this.state;
     const { fields } = form;
-    if (!fields.origin || !fields.destination) return;
-
-    this.directionsService.route({
-      origin: fields.origin.value,
-      destination: fields.destination.value,
-      travelMode: google.maps.TravelMode.DRIVING,
-    }, (res, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        this.setState({
-          ...state,
-          directions: res
-        })
-      } else {
-        console.error(`error fetching directions ${res}`);
-      }
-    });
+    if (!fields.value) return;
+    // TODO
   }
 
   render() {
-    const locationOpts = [
-      { value: new google.maps.LatLng(41.8507300, -87.6512600), label: 'loc1' },
-      { value: new google.maps.LatLng(41.8525800, -87.6514100), label: 'loc2' }
-    ];
-    const origin = this.state.form.fields.origin;
-
     return (
       <Box>
         <Navbar />
@@ -78,9 +51,7 @@ class Form extends FormUtil {
             onSubmit={this._onSubmit}
           >
             <FormFields>
-              {this.renderInputField('Name', 'name', 'text')}
-              {this.renderSelectField('Origin', 'origin', locationOpts, this._onNeedDirections)}
-              {this.renderSelectField('Destination', 'destination', locationOpts, this._onNeedDirections)}
+              {this.renderInputField('Label', 'label', 'text')}
             </FormFields>
             <Box pad={{ vertical: 'medium', between: 'medium' }}>
               <Box direction='row'>
@@ -91,15 +62,13 @@ class Form extends FormUtil {
               </Box>
             </Box>
           </GrommetForm>
-          <DirectionsGoogleMap
+          <LocationGoogleMap
             containerElement={
               <Box size={{height: 'medium', width: 'medium'}}/>
             }
             mapElement={
               <div style={{height: `100%`}}/>
             }
-            center={origin ? origin.value: null}
-            directions={this.state.directions}
           />
         </Box>
       </Box>

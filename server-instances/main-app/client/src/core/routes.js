@@ -12,6 +12,9 @@ import DashboardIndex from '../dashboard/DashboardIndex';
 import BusRoutes from '../dashboard/bus-routes/List';
 import BusRouteCreate from '../dashboard/bus-routes/Create';
 import BusRouteEdit from '../dashboard/bus-routes/Edit';
+import Stops from '../dashboard/stops/List';
+import StopCreate from '../dashboard/stops/Create';
+import StopEdit from '../dashboard/stops/Edit';
 import Users from '../dashboard/users/List';
 import Home from '../home/Home';
 import { hideToast } from '../toast/store/actions';
@@ -30,6 +33,10 @@ export default (store) => {
         <Route path='routes' component={BusRoutes}>
           <Route path='create' component={BusRouteCreate} />
           <Route path=':routeId/edit' component={BusRouteEdit} />
+        </Route>
+        <Route path='stops' component={Stops}>
+          <Route path='create' component={StopCreate} />
+          <Route path=':stopId/edit' component={StopEdit} />
         </Route>
         <Route path='users' component={Users} />
       </Route>
