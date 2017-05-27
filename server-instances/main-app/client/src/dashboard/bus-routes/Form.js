@@ -7,7 +7,7 @@ import FormUtil from '../../common/Form';
 import Navbar from './navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
 
-import  {withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
+import  { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
 
 const DirectionsExampleGoogleMap = withGoogleMap(props => (
   <GoogleMap

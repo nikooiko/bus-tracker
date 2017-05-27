@@ -41,7 +41,11 @@
   "relations": {
     "stops": {
       "type": "hasMany",
-      "model": "Stop"
+      "model": "Stop",
+      "description": [
+        "The stops that create this route. The first and the last stop are the origin and",
+        "destination of this route."
+      ]
     }
   },
   "acls": [
