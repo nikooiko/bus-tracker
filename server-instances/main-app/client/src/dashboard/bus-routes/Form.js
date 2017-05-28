@@ -44,6 +44,10 @@ class Form extends FormUtil {
     bindFunctions(this, ['_onNeedDirections']);
   }
 
+  componentDidMount() {
+    this._onNeedDirections();
+  }
+
   _onNeedDirections(err) {
     const { state } = this;
     const { fields } = state.form;
@@ -89,6 +93,8 @@ class Form extends FormUtil {
     const { stops } = this.props.stops;
     const origin = this.state.form.fields.origin;
 
+    const center = origin ? new google.maps.LatLng(origin.value.lat, origin.value.long): null;
+
     return (
       <Box>
         <Navbar />
@@ -118,7 +124,7 @@ class Form extends FormUtil {
             mapElement={
               <div style={{height: `100%`}}/>
             }
-            center={origin ? origin.value: null}
+            center={center}
             directions={this.state.directions}
           />
         </Box>

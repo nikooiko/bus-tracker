@@ -17,13 +17,13 @@ class Edit extends React.Component {
   }
 
   findInStops() {
-    const { stops, stopId, replace } = this.props;
+    const { stops, stopId, router } = this.props;
     const findStop = (stop) => {
       return stop.id === stopId;
     };
     const stopIndex = stops.findIndex(findStop);
     if (stopIndex === -1) {
-      replace('/stops');
+      router.replace('/stops');
       return;
     }
     const prevState = this.state;

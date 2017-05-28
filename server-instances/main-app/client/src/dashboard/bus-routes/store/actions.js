@@ -60,9 +60,12 @@ export const createOfficialRoute = (form) => {
     // TODO maybe add fetching status or smth
     // also append isOfficial to form
     form.isOfficial = true;
-    // add dummy origin/destination for now // TODO add form functionality for origin/destination
-    form.origin = {};
-    form.destination = {};
+    form.stopIds = [
+      form.origin.id,
+      form.destination.id
+    ];
+    delete form.origin;
+    delete form.destination;
 
     return api.post('/Routes', form)
       .then(response => {
@@ -90,6 +93,13 @@ export const createOfficialRoute = (form) => {
 export const updateOfficialRoute = (routeId, form) => {
   return (dispatch) => {
     // TODO maybe add fetching status or smth
+    form.stopIds = [
+      form.origin.id,
+      form.destination.id
+    ];
+    delete form.origin;
+    delete form.destination;
+
     return api.patch(`/Routes/${routeId}`, form)
       .then(response => {
         const route = response.data;

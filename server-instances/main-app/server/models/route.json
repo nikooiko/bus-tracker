@@ -19,22 +19,6 @@
         "as a filter to find "
       ],
       "default": false
-    },
-    "source": {
-      "type": "Object",
-      "required": true,
-      "description": [
-        "The starting point of this route. Should contain a name and location (object that",
-        "contains `lat` and `long` properties)."
-      ]
-    },
-    "destination": {
-      "type": "Object",
-      "required": true,
-      "description": [
-        "The ending point of this route. Should contain a name and location (object that",
-        "contains `Number` properties `lat` and `long`)."
-      ]
     }
   },
   "validations": [],
