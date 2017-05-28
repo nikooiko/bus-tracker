@@ -4,33 +4,29 @@ import bindFunctions from '../../utils/bindFunctions';
 import { createStop } from './store/actions';
 import Form from './Form';
 
-class Create extends Form {
+class Create extends React.Component {
   constructor(props, content) {
-    const defaultFieldValues = {
-      label: '',
-      value: null
-    };
-
-    super(props, content, defaultFieldValues);
-    bindFunctions(this, ['_onSubmit']);
+    super(props, content);
+    bindFunctions(this, ['submit']);
   }
 
-  _onSubmit(event) {
-    event.preventDefault();
-    const newState = { ...this.state };
-    const form = newState.form;
-    this.validateForm(form);
-    if (Object.keys(form.errors).length !== 0) {
-      this.setState(newState);
-    } else {
-      this.props.createStop(form.fields)
-        .catch((errors) => {
-          // pass errors to form
-          const anotherNewState = { ...this.state };
-          anotherNewState.form.errors = { ...errors };
-          this.setState(anotherNewState);
-        });
-    }
+  submit(fields) {
+    return this.props.createStop(fields);
+  }
+
+  render() {
+    const defaultFieldValues = {
+      name: '',
+      origin: null,
+      destination: null
+    };
+
+    return (
+      <Form
+        submit={this.submit}
+        defaultFieldValues={defaultFieldValues}
+      />
+    );
   }
 }
 

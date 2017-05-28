@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import bindFunctions from '../../utils/bindFunctions';
 import { updateStop } from './store/actions';
 import Form from './Form';
+import Loading from "../../common/Loading";
 
-class Edit extends Form {
+class Edit extends React.Component {
   constructor(props, content) {
-    const defaultFieldValues = {
-      label: ''
-    };
-
-    super(props, content, defaultFieldValues);
-    bindFunctions(this, ['_onSubmit']);
+    super(props, content);
+    bindFunctions(this, ['submit']);
 
     this.state = {
       ...this.state,
@@ -32,13 +29,7 @@ class Edit extends Form {
     const prevState = this.state;
     this.setState({
       ...prevState,
-      stopIndex,
-      form: {
-        ...prevState.form,
-        fields: {
-          label: stops[stopIndex].label
-        }
-      }
+      stopIndex
     });
   }
 
@@ -56,23 +47,35 @@ class Edit extends Form {
     }
   }
 
-  _onSubmit(event) {
-    event.preventDefault();
+
+  submit(fields) {
     const { updateStop, stopId } = this.props;
-    const newState = {...this.state};
-    const form = newState.form;
-    this.validateForm(form);
-    if (Object.keys(form.errors).length !== 0) {
-      this.setState(newState);
+    return updateStop(stopId, fields)
+  }
+
+  render() {
+    const { stopIndex } = this.state;
+    const stop = this.props.stops[stopIndex];
+    let content;
+    if (stop) {
+      const defaultFieldValues = {
+        name: stop.name,
+        origin: stop.origin,
+        destination: stop.destination
+      };
+      content = (
+        <Form
+          submit={this.submit}
+          defaultFieldValues={defaultFieldValues}
+        />
+      );
     } else {
-      updateStop(stopId, form.fields)
-        .catch((errors) => {
-          // pass errors to form
-          const anotherNewState = { ...this.state };
-          anotherNewState.form.errors = { ...errors };
-          this.setState(anotherNewState);
-        });
+      content = (
+        <Loading/>
+      )
     }
+
+    return content;
   }
 }
 
