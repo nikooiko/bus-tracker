@@ -5,7 +5,7 @@ import { updateOfficialRoute } from './store/actions';
 import Form from './Form';
 import Loading from "../../common/Loading";
 
-class Edit extends Form {
+class Edit extends React.Component {
   constructor(props, content) {
     super(props, content);
     bindFunctions(this, ['submit']);
@@ -48,7 +48,8 @@ class Edit extends Form {
   }
 
   submit(fields) {
-    return this.props.updateOfficialRoute(fields);
+    const { updateOfficialRoute, routeId } = this.props;
+    return updateOfficialRoute(routeId, fields);
   }
 
   render() {
