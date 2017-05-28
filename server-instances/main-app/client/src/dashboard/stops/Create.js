@@ -17,7 +17,7 @@ class Create extends Form {
 
   _onSubmit(event) {
     event.preventDefault();
-    const newState = {...this.state};
+    const newState = { ...this.state };
     const form = newState.form;
     this.validateForm(form);
     if (Object.keys(form.errors).length !== 0) {

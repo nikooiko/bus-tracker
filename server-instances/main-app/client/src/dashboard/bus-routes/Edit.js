@@ -3,19 +3,16 @@ import { connect } from 'react-redux';
 import bindFunctions from '../../utils/bindFunctions';
 import { updateOfficialRoute } from './store/actions';
 import Form from './Form';
+import Loading from "../../common/Loading";
 
 class Edit extends Form {
   constructor(props, content) {
-    const defaultFieldValues = {
-      name: ''
-    };
-
-    super(props, content, defaultFieldValues);
-    bindFunctions(this, ['_onSubmit']);
+    super(props, content);
+    bindFunctions(this, ['submit']);
 
     this.state = {
       ...this.state,
-      routeIndex: -1,
+      routeIndex: -1
     }
   }
 
@@ -32,13 +29,7 @@ class Edit extends Form {
     const prevState = this.state;
     this.setState({
       ...prevState,
-      routeIndex,
-      form: {
-        ...prevState.form,
-        fields: {
-          name: routes[routeIndex].name
-        }
-      }
+      routeIndex
     });
   }
 
@@ -56,23 +47,33 @@ class Edit extends Form {
     }
   }
 
-  _onSubmit(event) {
-    event.preventDefault();
-    const { updateOfficialRoute, routeId } = this.props;
-    const newState = {...this.state};
-    const form = newState.form;
-    this.validateForm(form);
-    if (Object.keys(form.errors).length !== 0) {
-      this.setState(newState);
+  submit(fields) {
+    return this.props.updateOfficialRoute(fields);
+  }
+
+  render() {
+    const { routeIndex } = this.state;
+    const route = this.props.routes[routeIndex];
+    let content;
+    if (route) {
+      const defaultFieldValues = {
+        name: route.name,
+        origin: route.stops[0],
+        destination: route.stops[route.stops.length - 1]
+      };
+      content = (
+        <Form
+          submit={this.submit}
+          defaultFieldValues={defaultFieldValues}
+        />
+      );
     } else {
-      updateOfficialRoute(routeId, form.fields)
-        .catch((errors) => {
-          // pass errors to form
-          const anotherNewState = { ...this.state };
-          anotherNewState.form.errors = { ...errors };
-          this.setState(anotherNewState);
-        });
+      content = (
+        <Loading/>
+      )
     }
+
+    return content;
   }
 }
 

@@ -1,19 +1,39 @@
 import React from 'react';
 import FormField from 'grommet/components/FormField';
 import Select from 'grommet/components/Select';
+import bindFunctions from '../utils/bindFunctions';
 
 class Form extends React.Component {
-  constructor(props, content, state, defaultFieldValues, formValidator) {
+  constructor(props, content, state, formValidator) {
     super(props, content);
     this.state = {
       ...state,
       form: {
-        fields: defaultFieldValues,
+        fields: props.defaultFieldValues,
         errors: {}
       }
     };
 
     this.formValidator = formValidator;
+    bindFunctions(this, ['_onSubmit']);
+  }
+
+  _onSubmit(event) {
+    event.preventDefault();
+    const newState = { ...this.state };
+    const form = newState.form;
+    this.validateForm(form);
+    if (Object.keys(form.errors).length !== 0) {
+      this.setState(newState);
+    } else {
+      this.props.submit(form.fields)
+        .catch((errors) => {
+          // pass errors to form
+          const anotherNewState = { ...this.state };
+          anotherNewState.form.errors = { ...errors };
+          this.setState(anotherNewState);
+        });
+    }
   }
 
   validateForm(form) {
@@ -28,21 +48,49 @@ class Form extends React.Component {
     }
   }
 
-  validateField(form, fieldName) {
+  /**
+   * Util that used to validate a field based on provided validator
+   *
+   * @param form The form containing all the fields
+   * @param fieldName The field to validate
+   * @param continueValidation Whether to call validation again for another field
+   *        (e.g. for comparisons).
+   * @returns {String|null} An error message or null if no error.
+   */
+  validateField(form, fieldName, continueValidation=true) {
     const fieldValidator = this.formValidator[fieldName];
     const value = form.fields[fieldName];
     const errors = form.errors;
-    if (value === '' && fieldValidator.required) {
-      errors[fieldName] = 'required';
-      return;
+    if ((value === '' || !value)  && fieldValidator.required) {
+      return errors[fieldName] = 'required';
     }
+    let continueErr = null;
     const shouldEqual = fieldValidator.shouldEqual;
-    if (shouldEqual && value !== form.fields[shouldEqual]) {
-      errors[fieldName] = 'no match';
-      return;
+    if (shouldEqual) {
+      let err = null;
+      if (value && value !== form.fields[shouldEqual]) {
+        err = errors[fieldName] = `should not equal ${shouldEqual}`;
+      }
+      if (continueValidation) {
+        continueErr = this.validateField(form, shouldEqual, false); // false to avoid lock
+      }
+      if (err) return err
+    }
+    const shouldNotEqual = fieldValidator.shouldNotEqual;
+    if (shouldNotEqual) {
+      let err = null;
+      let continueErr = null;
+      if (value && value === form.fields[shouldNotEqual]) {
+        err = errors[fieldName] = `should not equal ${shouldNotEqual}`;
+      }
+      if (continueValidation) {
+        continueErr = this.validateField(form, shouldNotEqual, false); // false to avoid lock
+      }
+      if (err) return err
     }
     // No error so delete
     delete errors[fieldName];
+    return continueErr; // return second level validation error
   }
 
   _onInputFieldChange(fieldName) {
@@ -73,11 +121,12 @@ class Form extends React.Component {
       const form = newState.form;
       form.fields[fieldName] = event.option;
       //check if need validation
+      let err = null;
       if (this.formValidator[fieldName]) {
-        this.validateField(form, fieldName);
+        err = this.validateField(form, fieldName);
       }
       this.setState(newState);
-      if (postAction && typeof postAction === 'function') postAction();
+      if (postAction && typeof postAction === 'function') postAction(err);
     }
   }
 
@@ -104,7 +153,6 @@ class Form extends React.Component {
           options={options}
           value={selectedOpt ? selectedOpt.label : null}
           onChange={this._onSelectFieldChange(name, postAction)}
-          onBlur={this._onSelectFieldChange(name, postAction)}
         />
       </FormField>
     );

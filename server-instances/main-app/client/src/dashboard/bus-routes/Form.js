@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import GrommetForm from 'grommet/components/Form';
 import FormFields from 'grommet/components/FormFields';
 import Button from 'grommet/components/Button';
@@ -23,50 +24,69 @@ const formValidator = {
     required: true
   },
   origin: {
-    required: true
+    required: true,
+    shouldNotEqual: 'destination'
   },
   destination: {
-    required: true
+    required: true,
+    shouldNotEqual: 'origin'
   }
 };
 
 class Form extends FormUtil {
-  constructor(props, content, defaultFieldValues) {
+  constructor(props, content) {
     const state = {
       directions: null
     };
-    super(props, content, state, defaultFieldValues, formValidator);
+    super(props, content, state, formValidator);
 
     this.directionsService = new google.maps.DirectionsService();
     bindFunctions(this, ['_onNeedDirections']);
   }
 
-  _onNeedDirections() {
-    const { state, form } = this.state;
-    const { fields } = form;
-    if (!fields.origin || !fields.destination) return;
+  _onNeedDirections(err) {
+    const { state } = this;
+    const { fields } = state.form;
+    if (err || !fields.origin || !fields.destination) { // clear if error
+      this.setState({
+        ...state,
+        directions: null
+      });
+      return;
+    }
+
+    const originLoc = fields.origin.value;
+    const destinationLoc = fields.destination.value;
 
     this.directionsService.route({
-      origin: fields.origin.value,
-      destination: fields.destination.value,
+      origin: new google.maps.LatLng(originLoc.lat, originLoc.long),
+      destination: new google.maps.LatLng(destinationLoc.lat, destinationLoc.long),
       travelMode: google.maps.TravelMode.DRIVING,
     }, (res, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.setState({
           ...state,
           directions: res
-        })
+        });
       } else {
-        console.error(`error fetching directions ${res}`);
+        console.error(`Error fetching directions ${status}`);
+        // TODO warn for invalid locations or smth
+        // pass errors to form
+        const anotherNewState = {
+          ...state,
+          directions: null
+        };
+        anotherNewState.form.errors = {
+          origin: 'could not create directions',
+          destination: 'could not create directions'
+        };
+        this.setState(anotherNewState);
       }
     });
   }
 
   render() {
-    const locationOpts = [
-      { value: new google.maps.LatLng(41.8507300, -87.6512600), label: 'loc1' },
-      { value: new google.maps.LatLng(41.8525800, -87.6514100), label: 'loc2' }
-    ];
+    const { stops } = this.props.stops;
     const origin = this.state.form.fields.origin;
 
     return (
@@ -79,8 +99,8 @@ class Form extends FormUtil {
           >
             <FormFields>
               {this.renderInputField('Name', 'name', 'text')}
-              {this.renderSelectField('Origin', 'origin', locationOpts, this._onNeedDirections)}
-              {this.renderSelectField('Destination', 'destination', locationOpts, this._onNeedDirections)}
+              {this.renderSelectField('Origin', 'origin', stops, this._onNeedDirections)}
+              {this.renderSelectField('Destination', 'destination', stops, this._onNeedDirections)}
             </FormFields>
             <Box pad={{ vertical: 'medium', between: 'medium' }}>
               <Box direction='row'>
@@ -107,4 +127,8 @@ class Form extends FormUtil {
   }
 }
 
-export default Form;
+const mapStateToProps = (state) => ({
+  stops: state.stops
+});
+
+export default connect(mapStateToProps, null)(Form);

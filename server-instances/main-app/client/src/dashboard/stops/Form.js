@@ -35,8 +35,8 @@ class Form extends FormUtil {
   }
 
   _onNeedLocation() {
-    const { state, form } = this.state;
-    const { fields } = form;
+    const { state } = this;
+    const { fields } = state.form;
     if (!fields.value) return;
     // TODO
   }

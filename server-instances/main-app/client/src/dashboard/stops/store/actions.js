@@ -53,8 +53,8 @@ export const createStop = (form) => {
     // TODO maybe add fetching status or smth
     // Todo remove mock data
     form.value = { // mock value
-      lat: 0,
-      long: 0
+      lat: 41.8507300,
+      long: -87.6512600
     };
 
     return api.post('/Stops', form)
