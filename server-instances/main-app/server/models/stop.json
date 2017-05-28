@@ -10,8 +10,7 @@
     "label": {
       "type": "string",
       "required": true,
-      "description": "The label of this stop (eg `Volos`)",
-      "unique": true
+      "description": "The label of this stop (eg `Volos`)"
     },
     "value": {
       "type": "object",

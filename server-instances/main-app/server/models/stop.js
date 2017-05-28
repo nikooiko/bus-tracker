@@ -12,4 +12,7 @@ module.exports = (Stop) => {
   // Static methods
 
   // Validations
+  Stop.validatesUniquenessOf('label', {
+    message: 'already exists'
+  });
 };
