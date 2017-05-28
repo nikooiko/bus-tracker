@@ -16,9 +16,8 @@ class Create extends React.Component {
 
   render() {
     const defaultFieldValues = {
-      name: '',
-      origin: null,
-      destination: null
+      label: '',
+      value: null
     };
 
     return (

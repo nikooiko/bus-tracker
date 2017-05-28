@@ -62,9 +62,12 @@ class Form extends FormUtil {
     const originLoc = fields.origin.value;
     const destinationLoc = fields.destination.value;
 
+    const origin = new google.maps.LatLng(originLoc.lat, originLoc.lng);
+    const destination = new google.maps.LatLng(destinationLoc.lat, destinationLoc.lng);
+
     this.directionsService.route({
-      origin: new google.maps.LatLng(originLoc.lat, originLoc.long),
-      destination: new google.maps.LatLng(destinationLoc.lat, destinationLoc.long),
+      origin,
+      destination,
       travelMode: google.maps.TravelMode.DRIVING,
     }, (res, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
@@ -74,15 +77,14 @@ class Form extends FormUtil {
         });
       } else {
         console.error(`Error fetching directions ${status}`);
-        // TODO warn for invalid locations or smth
         // pass errors to form
         const anotherNewState = {
           ...state,
           directions: null
         };
         anotherNewState.form.errors = {
-          origin: 'could not create directions',
-          destination: 'could not create directions'
+          origin: 'could not create route',
+          destination: 'could not create route'
         };
         this.setState(anotherNewState);
       }
@@ -91,9 +93,7 @@ class Form extends FormUtil {
 
   render() {
     const { stops } = this.props.stops;
-    const origin = this.state.form.fields.origin;
-
-    const center = origin ? new google.maps.LatLng(origin.value.lat, origin.value.long): null;
+    const center = this.state.form.fields.origin;
 
     return (
       <Box>

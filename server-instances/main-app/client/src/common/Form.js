@@ -26,7 +26,9 @@ class Form extends React.Component {
     if (Object.keys(form.errors).length !== 0) {
       this.setState(newState);
     } else {
-      this.props.submit(form.fields)
+      this.props.submit({
+        ...form.fields
+      })
         .catch((errors) => {
           // pass errors to form
           const anotherNewState = { ...this.state };
@@ -79,7 +81,6 @@ class Form extends React.Component {
     const shouldNotEqual = fieldValidator.shouldNotEqual;
     if (shouldNotEqual) {
       let err = null;
-      let continueErr = null;
       if (value && value === form.fields[shouldNotEqual]) {
         err = errors[fieldName] = `should not equal ${shouldNotEqual}`;
       }

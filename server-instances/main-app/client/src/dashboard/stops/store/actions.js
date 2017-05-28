@@ -54,7 +54,7 @@ export const createStop = (form) => {
     // Todo remove mock data
     form.value = { // mock value
       lat: 41.8507300,
-      long: -87.6512600
+      lng: -87.6512600
     };
 
     return api.post('/Stops', form)

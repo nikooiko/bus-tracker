@@ -59,9 +59,8 @@ class Edit extends React.Component {
     let content;
     if (stop) {
       const defaultFieldValues = {
-        name: stop.name,
-        origin: stop.origin,
-        destination: stop.destination
+        label: stop.label,
+        value: stop.value
       };
       content = (
         <Form

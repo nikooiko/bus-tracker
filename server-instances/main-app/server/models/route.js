@@ -12,4 +12,7 @@ module.exports = (Route) => {
   // Static methods
 
   // Validations
+  Route.validatesUniquenessOf('name', {
+    message: 'already exists'
+  });
 };

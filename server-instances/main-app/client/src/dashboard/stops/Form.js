@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import GrommetForm from 'grommet/components/Form';
 import FormFields from 'grommet/components/FormFields';
 import Button from 'grommet/components/Button';
@@ -6,14 +7,24 @@ import Box from 'grommet/components/Box';
 import FormUtil from '../../common/Form';
 import Navbar from './navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
+import { showToast } from '../../toast/store/actions';
 
 import  { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+
+const defaultCenter = {
+  lat: 39.3666667,
+  lng: 22.9458333
+};
 
 const LocationGoogleMap = withGoogleMap(props => (
   <GoogleMap
     defaultZoom={7}
-    defaultCenter={props.center}
+    defaultCenter={props.center || defaultCenter}
+    onClick={props.onMapClick}
   >
+    {props.markers.map((marker, index) => (
+      <Marker position={marker} key={index} />
+    ))}
   </GoogleMap>
 ));
 
@@ -27,21 +38,39 @@ const formValidator = {
 };
 
 class Form extends FormUtil {
-  constructor(props, content, defaultFieldValues) {
-    const state = {};
-    super(props, content, state, defaultFieldValues, formValidator);
+  constructor(props, content) {
+    super(props, content, {}, formValidator);
 
-    bindFunctions(this, ['_onNeedLocation']);
+    bindFunctions(this, ['_onMapClick']);
   }
 
-  _onNeedLocation() {
+  _onMapClick(event) {
     const { state } = this;
-    const { fields } = state.form;
-    if (!fields.value) return;
-    // TODO
+    const { latLng } = event;
+    const newState = {...state};
+    newState.form.fields.value = {
+      lat: latLng.lat(),
+      lng: latLng.lng()
+    };
+    this.setState(newState);
+    this.validateField(this.state.form, 'value');
+  }
+
+  componentWillUpdate() {
+    const valueError = this.state.form.errors['value'];
+    if (valueError) {
+      this.props.showToast({
+        message: 'You must add a location! Click inside map.',
+        status: 'critical'
+      });
+    }
   }
 
   render() {
+    const center = this.state.form.fields.value;
+    const markers = [];
+    if (center) markers.push(center);
+
     return (
       <Box>
         <Navbar />
@@ -69,6 +98,9 @@ class Form extends FormUtil {
             mapElement={
               <div style={{height: `100%`}}/>
             }
+            center={center}
+            markers={markers}
+            onMapClick={this._onMapClick}
           />
         </Box>
       </Box>
@@ -76,4 +108,4 @@ class Form extends FormUtil {
   }
 }
 
-export default Form;
+export default connect(null, { showToast })(Form);
