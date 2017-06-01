@@ -97,7 +97,8 @@ class Form extends FormUtil {
 
   render() {
     const { stops } = this.props.stops;
-    const center = this.state.form.fields.origin;
+    const { origin } = this.state.form.fields;
+    const center = origin && origin.value;
 
     return (
       <Box>
