@@ -9,7 +9,7 @@ import Navbar from './navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
 import { showToast } from '../../toast/store/actions';
 
-import  { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
 const defaultCenter = {
   lat: 39.3666667,
@@ -23,7 +23,7 @@ const LocationGoogleMap = withGoogleMap(props => (
     onClick={props.onMapClick}
   >
     {props.markers.map((marker, index) => (
-      <Marker position={marker} key={index} />
+      <Marker title={marker.title} position={marker.position} key={index} />
     ))}
   </GoogleMap>
 ));
@@ -67,9 +67,15 @@ class Form extends FormUtil {
   }
 
   render() {
-    const center = this.state.form.fields.value;
+    const fields = this.state.form.fields;
+    const center = fields.value;
     const markers = [];
-    if (center) markers.push(center);
+    if (center) {
+      markers.push({
+        position: center,
+        title: fields.label
+      });
+    }
 
     return (
       <Box>
