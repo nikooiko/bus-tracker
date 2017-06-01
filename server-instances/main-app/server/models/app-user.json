@@ -18,7 +18,22 @@
   "properties": {
     "location": {
       "type": "object",
-      "description": "Should contain `Number` properties `long` and `lat`"
+      "description": "Should contain `Number` properties `lng` and `lat`"
+    },
+    "analytics": {
+      "type": "object",
+      "description": [
+        "This holds the various calculated analytics for a driver that has",
+        "active route. Currently supported analytics are 'DEST_ETA'."
+      ],
+      "default": {}
+    },
+    "activeRoute": {
+      "type": "any",
+      "describe": [
+        "Holds the route id that the driver selected as an active route.",
+        "Can be null. On set, should clear all analytics."
+      ]
     }
   },
   "validations": [],
@@ -30,16 +45,22 @@
       "through": "RoleMapping"
     },
     "interestingRoutes": {
-      "type": "hasMany",
-      "model": "Route"
+      "type": "referencesMany",
+      "model": "Route",
+      "foreignKey": "interestingRoutes",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     },
     "favouriteRoutes": {
-      "type": "hasMany",
-      "model": "Route"
-    },
-    "activeRoute": {
-      "type": "hasOne",
-      "model": "Route"
+      "type": "referencesMany",
+      "model": "Route",
+      "foreignKey": "favouriteRoutes",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     },
     "storedRoutes": {
       "type": "hasMany",

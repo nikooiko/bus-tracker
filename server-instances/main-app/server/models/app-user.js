@@ -72,6 +72,118 @@ module.exports = (AppUser) => {
     });
   });
 
+  /**
+   * Remote method for setting a role to a user.
+   */
+  AppUser.remoteMethod('setRole', {
+    description: 'The login functionality for devices to receive token for server communication',
+    http: {
+      verb: 'post',
+      status: 200,
+      errorStatus: 400
+    },
+    isStatic: true,
+    accepts: [{
+      arg: 'userId',
+      description: 'The user we want to add/remove this role to.',
+      required: true,
+      type: 'string'
+    }, {
+      arg: 'roleName',
+      description: 'The name of the role.',
+      required: true,
+      type: 'string'
+    }, {
+      arg: 'shouldRemove',
+      description: 'Indicates whether the role will be removed or added',
+      type: 'boolean'
+    }],
+    returns: [{
+      arg: 'roles',
+      description: 'The final user roles',
+      type: 'object',
+      root: true
+    }]
+  });
+
+  AppUser.remoteMethod('setActiveRoute', {
+    description: 'Set the currently active route',
+    http: {
+      verb: 'post',
+      status: 200,
+      path: '/:id/setActiveRoute',
+      errorStatus: 400
+    },
+    accepts: [
+      {
+        arg: 'id',
+        type: 'object',
+        description: 'User ID to set active route',
+        required: true,
+        http: (ctx) => ctx.req.accessToken && ctx.req.accessToken.userId
+      },
+      {
+        arg: 'routeId',
+        type: 'string',
+        description: 'The routeId to use as active route',
+        http: { source: 'form' }
+      }
+    ],
+    returns: {
+      arg: 'message',
+      description: 'The success message',
+      type: 'string'
+    }
+  });
+
+  // Static methods
+  AppUser.getUserRoles = (userId) => {
+    const appModels = AppUser.app.models;
+    const Role = appModels.Role;
+    const RoleMapping = appModels.RoleMapping;
+    return new Promise((resolve, reject) => {
+      Role.getRoles({ principalType: RoleMapping.USER, principalId: userId }, (err, roles) => {
+        if (err) {
+          return reject(err);
+        }
+        const rolesToResolve = [];
+        roles.forEach((role, index) => {
+          if (role.hasOwnProperty('id')) {
+            const roleFn = Role.findById(role)
+              .then(foundRole => {
+                roles[index] = foundRole.name;
+              });
+            rolesToResolve.push(roleFn);
+          }
+        });
+        if (rolesToResolve.length === 0) {
+          return resolve(roles);
+        }
+        return Promise.all(rolesToResolve)
+          .then(() => resolve(roles));
+      });
+    });
+  };
+
+  AppUser.setActiveRoute = function setActiveRoute(userId, routeId) {
+    return Promise.all([
+      AppUser.findById(userId),
+      routeId && AppUser.app.models.Route.findById(routeId)
+    ])
+      .then(([foundUser, foundRoute]) => {
+        if (!foundUser) return Promise.reject(httpError('No user with this id', 400));
+        if (!foundRoute && routeId) {
+          return Promise.reject(httpError('No route with this id', 400));
+        }
+        // set found route as active route
+        foundUser.activeRoute = foundRoute && foundRoute.id;
+        // reset the analytics for this driver
+        foundUser.analytics = {};
+        return foundUser.save();
+      })
+        .then(() => ({ message: 'Set active route successfully' }));
+  };
+
   AppUser.setRole = function setRole(userId, roleName, shouldRemove) {
     const appModels = AppUser.app.models;
     const Role = appModels.Role;
@@ -126,75 +238,6 @@ module.exports = (AppUser) => {
         logger.error({ err }, 'Set role request failed');
         return Promise.reject(err);
       });
-  };
-
-  /**
-   * Remote method for setting a role to a user.
-   */
-  AppUser.remoteMethod('setRole', {
-    description: 'The login functionality for devices to receive token for server communication',
-    http: {
-      verb: 'post',
-      status: 200,
-      errorStatus: 400
-    },
-    isStatic: true,
-    accepts: [{
-      arg: 'userId',
-      description: 'The user we want to add/remove this role to.',
-      required: true,
-      type: 'string'
-    }, {
-      arg: 'roleName',
-      description: 'The name of the role.',
-      required: true,
-      type: 'string'
-    }, {
-      arg: 'shouldRemove',
-      description: 'Indicates whether the role will be removed or added',
-      type: 'boolean'
-    }],
-    returns: [{
-      arg: 'roles',
-      description: 'The final user roles',
-      type: 'object',
-      root: true
-    }]
-  });
-
-  // Static methods
-  /**
-   * @method getUserRoles
-   * @param {ObjectID} userId The userId to get Roles for
-   * @return {Promise} A promise that will resolve with an array of Roles for the user.
-   * @static
-   */
-  AppUser.getUserRoles = (userId) => {
-    const appModels = AppUser.app.models;
-    const Role = appModels.Role;
-    const RoleMapping = appModels.RoleMapping;
-    return new Promise((resolve, reject) => {
-      Role.getRoles({ principalType: RoleMapping.USER, principalId: userId }, (err, roles) => {
-        if (err) {
-          return reject(err);
-        }
-        const rolesToResolve = [];
-        roles.forEach((role, index) => {
-          if (role.hasOwnProperty('id')) {
-            const roleFn = Role.findById(role)
-              .then(foundRole => {
-                roles[index] = foundRole.name;
-              });
-            rolesToResolve.push(roleFn);
-          }
-        });
-        if (rolesToResolve.length === 0) {
-          return resolve(roles);
-        }
-        return Promise.all(rolesToResolve)
-          .then(() => resolve(roles));
-      });
-    });
   };
 
   // Validations
