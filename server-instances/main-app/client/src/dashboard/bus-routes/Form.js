@@ -4,16 +4,20 @@ import GrommetForm from 'grommet/components/Form';
 import FormFields from 'grommet/components/FormFields';
 import Button from 'grommet/components/Button';
 import Box from 'grommet/components/Box';
+import  { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
 import FormUtil from '../../common/Form';
 import Navbar from './navigation/Navbar';
 import bindFunctions from '../../utils/bindFunctions';
 
-import  { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
+const defaultCenter = {
+  lat: 39.3666667,
+  lng: 22.9458333
+};
 
 const DirectionsGoogleMap = withGoogleMap(props => (
   <GoogleMap
     defaultZoom={7}
-    defaultCenter={props.center}
+    defaultCenter={props.center || defaultCenter}
   >
     {props.directions && <DirectionsRenderer directions={props.directions}/>}
   </GoogleMap>
