@@ -51,11 +51,6 @@ export const fetchStops = () => {
 export const createStop = (form) => {
   return (dispatch) => {
     // TODO maybe add fetching status or smth
-    // Todo remove mock data
-    form.value = { // mock value
-      lat: 41.8507300,
-      lng: -87.6512600
-    };
 
     return api.post('/Stops', form)
       .then(response => {
