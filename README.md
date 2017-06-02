@@ -38,11 +38,8 @@ There are four instances at this ecosystem:
 * A passenger mobile application (free/opened)
 * A web app for the presentation of the entire ecosystem (Basically an extensive aboutUs) (maybe)
 
-### What are the requirements/prerequisites?
+### What are the requirements/prerequisites for this project in order to gain value?
 Need to get in contact with bus company's drivers in order to create a demo on realistic environment.
-```
-TODO
-```
 
 ## Schedule
 The project started at **19 February 2017** and will (for now) end at **30 June 2017**
@@ -51,14 +48,14 @@ Each sprint will last two weeks (starts at Sundays and ends after two Saturdays)
 
 Final sprint lasts three weeks.
 
-Schedule can be found at the below trello board:
+Schedule can be found at the below trello board (private):
 https://trello.com/b/c4ebNtw5
 
-## Research
-* Did a basic research on google maps.
-```
-TODO Research about google maps api
-```
+## Research/Training
+* https://developer.android.com/training/index.html
+* https://developers.google.com/maps/documentation/android-api/
+* https://www.udacity.com/course/material-design-for-android-developers--ud862
+* https://developer.android.com/training/design-navigation/screen-planning.html
 
 ## Technologies
 The technologies that are going to be used at each instance (see [deliverables](https://github.com/nikooiko/Bus#deliverables))
@@ -69,7 +66,7 @@ Backend:
   * Node.js
   * Loopback
 
-Admin's app:
+Admin's dashboard:
 * React
 * Redux
 * Grommet UI
